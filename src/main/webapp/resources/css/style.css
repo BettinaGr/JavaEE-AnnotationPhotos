@@ -1,0 +1,42 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 4 janv. 2020, 17:00:11
+    Author     : Bettina
+*/
+body{
+    text-align: center;
+    background-color: #303030;
+    color: white;
+}
+h2 {
+    margin-bottom: 2%;
+}
+label{
+    font-weight: bold;
+}
+a {
+    color: white;
+}
+input {
+    width: 15%;
+   
+}
+p {
+    color: red;
+}
+.btn {
+    width:20%;
+    border: 2px solid rgba(10, 180, 180, 1);
+    background: #303030;
+    font-size: 18px;
+    color: white;
+    margin-top: 20px;
+    padding: 10px 50px;
+    cursor: pointer;
+    transition: .4s;
+    
+}
