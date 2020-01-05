@@ -48,18 +48,14 @@ public class SempicUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @NotBlank(message="Un nom de famille doit être donné")
+
     private String lastname;
     
-    @NotBlank(message="Un prénom doit être donné")
     private String firstname;
     
     @Email
-    @NotBlank(message="Une adresse mail doit être donnée")
     private String email;
     
-    @NotBlank(message="Un mot de passe doit être donné")
     private String passwordHash;
     
     @Transient

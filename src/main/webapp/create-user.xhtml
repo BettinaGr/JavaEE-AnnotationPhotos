@@ -14,28 +14,24 @@
             <!-- <h:panelGrid columns = "3"> -->
                 <label for="lastname">Nom:</label>
                 <br/>
-                <h:inputText id="lastname" h5:placeholder="Votre nom" value="#{createUser.current.lastname}"/>
+                <h:inputText id="lastname" h5:placeholder="Votre nom" h5:required="required" value="#{createUser.current.lastname}"/>
                 <br/>
-                <p><h:message for="lastname"/></p>
-                <br/>
+                
                 <label for="firstname">Prenom:</label>
                 <br/>
-                <h:inputText id="firstname" h5:placeholder="Votre prénom" value="#{createUser.current.firstname}"/>
+                <h:inputText id="firstname" h5:placeholder="Votre prénom" h5:required="required" value="#{createUser.current.firstname}"/>
                 <br/>
-                <p><h:message for="firstname"/></p>
-                <br/>
+                
                 <label for="email">Email:</label>
                 <br/>
-                <h:inputText id="email" h5:placeholder="Votre adresse mail" h5:type="email" value="#{createUser.current.email}"/>
+                <h:inputText id="email" h5:placeholder="Votre adresse mail" h5:type="email" h5:required="required" value="#{createUser.current.email}"/>
                 <br/>
-                <p><h:message for="email"/></p>
-                <br/>
+                
                 <label for="password">Mot de passe</label>
                 <br/>
-                <h:inputSecret id="password" h5:placeholder="Votre mot de passe" value="#{createUser.password}"/>
+                <h:inputSecret id="password" h5:placeholder="Votre mot de passe" h5:required="required" value="#{createUser.password}" />
                 <br/>
-                <p><h:message for="password"/></p>
-                <br/>
+                
                 <h:commandButton class="btn" value="S'inscrire" action="#{createUser.create()}"/>
             <!-- </h:panelGrid> -->
             <h:messages globalOnly="true"/>

@@ -35,7 +35,7 @@ public class CreateUser implements Serializable {
     
     @Inject
     private SempicUserFacade userDao;
-    
+
     
 
     
