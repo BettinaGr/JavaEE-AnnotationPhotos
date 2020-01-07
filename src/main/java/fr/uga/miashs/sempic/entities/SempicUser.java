@@ -32,6 +32,10 @@ import javax.validation.constraints.*;
 @NamedQuery(
         name = "query.SempicUser.login",
         query = "SELECT DISTINCT u FROM SempicUser u WHERE u.email=:email AND u.passwordHash=:passwordHash"
+),
+@NamedQuery(
+        name = "query.SempicUser.remove",
+        query = "DELETE FROM SempicUser u WHERE u.id=:id "
 )
 })
 @NamedEntityGraph(

@@ -34,6 +34,21 @@ input {
     margin-top: 20px;
     padding: 10px 50px;
     cursor: pointer;
-    transition: .4s;
-    
+    transition: .4s;  
+}
+
+.btnRemove {
+    background: #303030;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+}
+table {
+    margin-left:auto; 
+    margin-right:auto;
+}
+td {
+    width:150px;
+    height:50px;
 }

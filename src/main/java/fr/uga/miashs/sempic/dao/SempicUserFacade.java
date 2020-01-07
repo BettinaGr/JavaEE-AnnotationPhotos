@@ -15,6 +15,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import javax.swing.*;
 
 /**
  *
@@ -65,5 +66,11 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
         return (SempicUser) q.getSingleResult();
     }
     
+    public void remove(String id){
+        
+
+        Query q = getEntityManager().createNamedQuery("query.SempicUser.remove");
+        q.setParameter("id", id).executeUpdate();
+    }
     
 }
