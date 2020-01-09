@@ -67,8 +67,6 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
     }
     
     public void remove(Long id){
-        
-
         Query q = getEntityManager().createNamedQuery("query.SempicUser.remove");
         q.setParameter("id", id).executeUpdate();
     }

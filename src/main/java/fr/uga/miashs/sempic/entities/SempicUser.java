@@ -71,6 +71,9 @@ public class SempicUser implements Serializable {
     @ManyToMany(mappedBy = "members" )//,cascade = CascadeType.REMOVE)
     private Set<SempicGroup> memberOf;
     
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
+    private Set<SempicAlbum> ownerOfAlbums;
+    
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition="VARCHAR(5)")
     private SempicUserType userType;
@@ -132,6 +135,12 @@ public class SempicUser implements Serializable {
     public Set<SempicGroup> getMemberOf() {
         if (memberOf==null) return Collections.emptySet();
         return Collections.unmodifiableSet(memberOf);
+    }
+    
+      // Liste des albums dont user est owner
+    public Set<SempicAlbum> getOwnerOfAlbums() {
+        if (ownerOfAlbums==null) return Collections.emptySet();
+        return Collections.unmodifiableSet(ownerOfAlbums);
     }
     
     public SempicUserType getUserType() {
