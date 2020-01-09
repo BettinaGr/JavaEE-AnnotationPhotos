@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,7 +24,14 @@ import javax.validation.constraints.NotNull;
  * @author Bettina
  */
 @Entity
-@Table(name="ALBUM")
+@Table
+@NamedQueries({
+    @NamedQuery(
+        name = "query.SempicAlbum.remove",
+        query = "DELETE FROM SempicAlbum a WHERE a.id=:id "
+    )
+})
+
 public class SempicAlbum {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -83,7 +92,6 @@ public class SempicAlbum {
         }
         return true;
     }
-
     @Override
     public String toString() {
         return "Album" + "id=" + id + ", name=" + name + ", owner=" + owner + '}';

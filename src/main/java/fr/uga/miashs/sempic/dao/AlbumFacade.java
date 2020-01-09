@@ -18,5 +18,8 @@ public class AlbumFacade extends AbstractJpaFacade<Long,SempicAlbum>{
     public AlbumFacade() {
         super(SempicAlbum.class);
     }
-    
+       public void remove(Long id){
+        Query q = getEntityManager().createNamedQuery("query.SempicAlbum.remove");
+        q.setParameter("id", id).executeUpdate();
+    }
 }
