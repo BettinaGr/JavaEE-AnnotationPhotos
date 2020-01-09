@@ -13,7 +13,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -24,12 +26,13 @@ import javax.inject.Named;
  * @author Bettina
  */
 @Named
-@SessionScoped
+@RequestScoped
 public class RemoveUser {
     @Inject
     private SempicUserFacade userDao;
 
-    public String id;
+    private String id;
+    private Long id2;
   
     public String getId() {
     return id;
@@ -43,7 +46,9 @@ public class RemoveUser {
 
         FacesContext fc = FacesContext.getCurrentInstance();
         this.id = getIdParam(fc);
-        userDao.remove(id);
+        this.id2 = Long.parseLong(this.id);
+        userDao.remove(this.id2);
+        
     }
      //get value from "f:param"
     public String getIdParam(FacesContext fc){

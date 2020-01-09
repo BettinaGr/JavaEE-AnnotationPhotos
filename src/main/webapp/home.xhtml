@@ -17,6 +17,7 @@
         <ul>
             <li><h:button outcome="create-album" value="Créer un album"/></li>
             <li><h:button outcome="admin/list-users" value="Liste des utilisateurs"/></li>
+            <li><h:button outcome="user/create-group?userId=#{sessionTools.connectedUser.id}" value="Créer groupe"/></li>
         </ul>
     </h:body>
 </html>
