@@ -2,23 +2,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <f:metadata>
         <f:viewAction  action="home"/>
     </f:metadata>
+    <h:outputStylesheet library="css" name="style.css"  />
     <h:head>
-        <title>Welcome page</title>
+        <title>Page d'accueil</title>
     </h:head>
     <h:body>
-        <p>Welcome to sempic application</p>
-        
-        <p>Avalaible actions:</p>
-        <ul>
-            <li><h:button outcome="create-album?userId=#{sessionTools.connectedUser.id}" value="Créer un album"/></li>
-            <li><h:button outcome="admin/list-users" value="Liste des utilisateurs"/></li>
-            <li><h:button outcome="user/create-group?userId=#{sessionTools.connectedUser.id}" value="Créer groupe"/></li>
-        </ul>
+        <h1>Accueil</h1>
+        <c:choose>
+            <c:when test="${sessionTools.connectedUser.userType == 'ADMIN'}">
+                <li><h:button outcome="admin/list-users" value="Liste des utilisateurs"/></li>          
+            </c:when>
+            <c:otherwise>
+                <ul>
+                    <li><h:button class="btn" outcome="create-album?userId=#{sessionTools.connectedUser.id}" value="Créer un album"/></li>
+                    <li><h:button class="btn" outcome="user/create-group?userId=#{sessionTools.connectedUser.id}" value="Créer groupe"/></li>
+                    <li><h:button class="btn" outcome="list-album" value="Liste des albums"/></li>
+                </ul>
+            </c:otherwise>
+        </c:choose>        
     </h:body>
 </html>
 

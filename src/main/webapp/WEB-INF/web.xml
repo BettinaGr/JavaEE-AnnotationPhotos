@@ -22,8 +22,6 @@
     <welcome-file-list>
         <welcome-file>faces/home.xhtml</welcome-file>
         <welcome-file>faces/admin/list-users.xhtml</welcome-file>
-     
-        
     </welcome-file-list>
     
     <!--listener>
@@ -49,6 +47,7 @@
         <web-resource-collection>
             <web-resource-name>userpages</web-resource-name>
             <description/>
+            <url-pattern>/faces/admin/*</url-pattern>
             <url-pattern>/faces/user/*</url-pattern>
             <url-pattern>/user/*</url-pattern>
             <url-pattern>/faces/home.xhtml</url-pattern>
