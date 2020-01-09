@@ -7,11 +7,13 @@ package fr.uga.miashs.sempic.entities;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,8 +21,10 @@ import javax.validation.constraints.NotNull;
  *
  * @author Bettina
  */
+@Entity
+@Table(name="ALBUM")
 public class SempicAlbum {
-    /*@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
@@ -53,6 +57,7 @@ public class SempicAlbum {
     public void setOwner(SempicUser owner) {
         this.owner = owner;
     }
+
     
     @Override
     public int hashCode() {
@@ -82,5 +87,5 @@ public class SempicAlbum {
     @Override
     public String toString() {
         return "Album" + "id=" + id + ", name=" + name + ", owner=" + owner + '}';
-    }*/
+    }
 }

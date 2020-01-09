@@ -26,7 +26,8 @@ import javax.inject.Named;
 @Named
 @ViewScoped
 public class CreateAlbum implements Serializable{
-    /*private SempicAlbum current;
+   
+    private SempicAlbum current;
     
     @Inject
     private AlbumFacade albumDao;
@@ -55,7 +56,6 @@ public class CreateAlbum implements Serializable{
         return ""+current.getOwner().getId();
     }
 
-    
     public List<SempicUser> getUsers() {
         return userDao.findAll();
     }
@@ -70,14 +70,12 @@ public class CreateAlbum implements Serializable{
     
     public String create() {
         System.out.println(current);
-        
         try {
             albumDao.create(current);
         } catch (SempicModelException ex) {
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(ex.getMessage()));
             return "failure";
         }
-        
         return "success";
-    } */
+    } 
 }

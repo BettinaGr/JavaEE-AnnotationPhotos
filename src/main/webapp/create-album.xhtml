@@ -2,8 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h5="http://xmlns.jcp.org/jsf/passthrough">
 <h:outputStylesheet library="css" name="style.css"  />
+    <f:metadata>
+        <f:viewParam name="userId" value="#{createAlbum.ownerId}" />
+    </f:metadata>
     <h:head>
         <title>Création d'un album photo</title>
     </h:head>
@@ -13,11 +17,10 @@
         <h:form>
                 <label for="name">Nom:</label>
                 <br/>
-                <h:inputText id="name" h5:placeholder="Nom de l'album" h5:required="required" />
+                <h:inputText id="name" h5:placeholder="Nom de l'album" h5:required="required" value="#{createAlbum.current.name}"/>
                 <br/>
                 
-                <h:commandButton class="btn" value="Créer" />
-            <h:messages globalOnly="true"/>
+                <h:commandButton class="btn" value="Créer" action="#{createAlbum.create()}"/>
         </h:form>
     </h:body>
 </html>
