@@ -21,6 +21,8 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class ListAlbums {
+    private SempicAlbum current;
+    
     private DataModel<SempicAlbum> dataModel;
 
     @Inject
@@ -29,8 +31,14 @@ public class ListAlbums {
     
     public DataModel<SempicAlbum> getDataModel() {
         if (dataModel == null) {
-            dataModel = new ListDataModel<>(albumDao.findAll());
+            //dataModel = new ListDataModel<>(albumDao.findAll());
+            dataModel = new ListDataModel<>(albumDao.findAlbum(Long.parseLong(getOwnerId())));
         }
         return dataModel;
+    }
+    public String getOwnerId() {
+        if (current.getOwner()==null)
+            return "-1";
+        return ""+current.getOwner().getId();
     }
 }

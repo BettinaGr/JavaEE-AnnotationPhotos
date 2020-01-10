@@ -13,17 +13,24 @@
         <title>Page d'accueil</title>
     </h:head>
     <h:body>
-        <h1>Accueil</h1>
         <c:choose>
             <c:when test="${sessionTools.connectedUser.userType == 'ADMIN'}">
-                <li><h:button outcome="admin/list-users" value="Liste des utilisateurs"/></li>          
+                <h2>Pour gérer les utilisateurs de l'application : </h2>
+                <br/>
+                <h:button class="btn" outcome="admin/list-users" value="Liste des utilisateurs"/>          
             </c:when>
             <c:otherwise>
-                <ul>
-                    <li><h:button class="btn" outcome="create-album?userId=#{sessionTools.connectedUser.id}" value="Créer un album"/></li>
-                    <li><h:button class="btn" outcome="user/create-group?userId=#{sessionTools.connectedUser.id}" value="Créer groupe"/></li>
-                    <li><h:button class="btn" outcome="list-album" value="Liste des albums"/></li>
-                </ul>
+                <h2>Créer un album : </h2>
+                <br/>
+                <h:button class="btn" outcome="create-album?userId=#{sessionTools.connectedUser.id}" value="Créer un album"/>
+                <br/>
+                <h2>Créer un groupe : </h2>
+                <br/>
+                <h:button class="btn" outcome="user/create-group?userId=#{sessionTools.connectedUser.id}" value="Créer groupe"/>
+                <br/>
+                <h2>Liste de vos albums : </h2>
+                <br/>
+                <h:button class="btn" outcome="list-album?userId=#{sessionTools.connectedUser.id}" value="Liste des albums"/>
             </c:otherwise>
         </c:choose>        
     </h:body>

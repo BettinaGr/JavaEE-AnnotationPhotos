@@ -39,17 +39,10 @@ public class RemoveAlbum {
     }
 
     public void remove(){
-        JPanel panel = new JPanel();
-        int input = JOptionPane.showConfirmDialog(panel, "Do you like bacon?");
-        
-        // 0=yes, 1=no, 2=cancel
-        System.out.println(input);
-        
         FacesContext fc = FacesContext.getCurrentInstance();
         this.id = getIdParam(fc);
         this.id2 = Long.parseLong(this.id);
-        albumDao.remove(this.id2);
-        
+        albumDao.remove(this.id2);   
     }
      //get value from "f:param"
     public String getIdParam(FacesContext fc){

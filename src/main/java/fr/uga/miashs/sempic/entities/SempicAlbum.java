@@ -29,6 +29,10 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
         name = "query.SempicAlbum.remove",
         query = "DELETE FROM SempicAlbum a WHERE a.id=:id "
+    ),
+    @NamedQuery(
+        name = "query.SempicAlbum.findAlbum",
+        query = "SELECT a FROM SempicAlbum a WHERE a.owner_id=:id "
     )
 })
 
