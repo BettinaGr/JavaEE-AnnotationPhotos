@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:outputStylesheet library="css" name="style.css" />
+  <h:head>
+    <title>Ajout de photos</title>
+  </h:head>
+
+  <h:body>
+    <h1>Ajouter une photo</h1>
+
+    <h:form>
+        <h2> Choisissez une photo à ajouter : </h2>
+        <br/>
+        <input name="photo" type="file"/> 
+        <br/>
+        <h2>Nom de la photo: </h2>
+        <br/>
+        <input name="photoName" type="text"/>
+
+      <p>
+        <input class="btn" type="submit"/>
+        <input class="btn" type="reset"/>
+      </p>
+    </h:form>
+  </h:body>
+</html>
