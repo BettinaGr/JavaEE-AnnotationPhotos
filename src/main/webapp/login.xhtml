@@ -2,21 +2,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:outputStylesheet library="css" name="style.css"  />
+
     <h:head>
         <title>Connexion</title>
     </h:head>
     <h:body>
+        <h1>Bienvenue</h1>
+        <h2>Voici notre application de gestion et d'annotation de vos photos</h2>
+        
         <form action="j_security_check" method="post">
-            <h:panelGrid columns = "2">
-                <label for="login">Login:</label>
-                <input id="login" name="j_username" type="text"/>
-                <label for="password">Password:</label>
-                <input id="password" name="j_password" type="password"/>
-
-            </h:panelGrid>
-            <input type="submit"/>
+            <h2>Connexion</h2>
+            <!--<h:panelGrid columns = "2"> -->
+                <label for="login">Email:</label>
+                <br/>
+                <input id="login" name="j_username" type="text" required="required"/>
+                <br/>
+                <label for="password">Mot de passe:</label>
+                <br/>
+                <input id="password" name="j_password" type="password" required="required"/>
+                <br/>
+            <!--</h:panelGrid>-->
+            <input class="btn" value="Se connecter" type="submit"/>
         </form>
-        <h:link value="Not registered? Register now"  outcome="create-user"/>
+        <h:link value="S'inscrire"  outcome="create-user"/>
+        
     </h:body>
 </html>
 

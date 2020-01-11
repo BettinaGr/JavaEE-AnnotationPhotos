@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * @author Jerome David <jerome.david@univ-grenoble-alpes.fr>
  */
 
-
+@Entity
 @Table(uniqueConstraints = {
     @UniqueConstraint(name = "UniqueEmail", columnNames = {"email"})
 })
@@ -32,6 +32,10 @@ import javax.validation.constraints.*;
 @NamedQuery(
         name = "query.SempicUser.login",
         query = "SELECT DISTINCT u FROM SempicUser u WHERE u.email=:email AND u.passwordHash=:passwordHash"
+),
+@NamedQuery(
+        name = "query.SempicUser.remove",
+        query = "DELETE FROM SempicUser u WHERE u.id=:id "
 )
 })
 @NamedEntityGraph(
@@ -41,25 +45,22 @@ import javax.validation.constraints.*;
     @NamedAttributeNode("memberOf"),
   }
 )
-@Entity
+
+
 public class SempicUser implements Serializable {
     public final static String PREFIX="/users/";
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @NotBlank(message="Un nom de famille doit être donné")
+
     private String lastname;
     
-    @NotBlank(message="Un prénom doit être donné")
     private String firstname;
     
     @Email
-    @NotBlank(message="Une adresse mail doit être donnée")
     private String email;
     
-    @NotBlank(message="Un mot de passe doit être donné")
     private String passwordHash;
     
     @Transient
@@ -68,8 +69,11 @@ public class SempicUser implements Serializable {
     @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
     private Set<SempicGroup> groups;
 
-    @ManyToMany(mappedBy = "members" )//,cascade = CascadeType.REMOVE)//, fetch=FetchType.EAGER
+    @ManyToMany(mappedBy = "members" )//,cascade = CascadeType.REMOVE)
     private Set<SempicGroup> memberOf;
+    
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
+    public static Set<SempicAlbum> ownerOfAlbums;
     
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition="VARCHAR(5)")
@@ -132,6 +136,12 @@ public class SempicUser implements Serializable {
     public Set<SempicGroup> getMemberOf() {
         if (memberOf==null) return Collections.emptySet();
         return Collections.unmodifiableSet(memberOf);
+    }
+    
+    // Liste des albums dont user est owner
+    public Set<SempicAlbum> getOwnerOfAlbums() {
+        if (ownerOfAlbums==null) return Collections.emptySet();
+        return Collections.unmodifiableSet(ownerOfAlbums);
     }
     
     public SempicUserType getUserType() {

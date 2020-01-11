@@ -28,6 +28,8 @@ import javax.persistence.NoResultException;
 import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 /**
  *
@@ -73,8 +75,10 @@ public class SessionTools implements Serializable {
     */
     public Principal authenticate(final String username, String password) {
         //Logger.getAnonymousLogger().log(Level.SEVERE,"username: "+username+" password: "+password);
+        
         try {
             connectedUser = userDao.login(username, password);
+            System.out.print("User = Admin");
             return new Principal() {
                 @Override
                 public String getName() {
@@ -96,10 +100,10 @@ public class SessionTools implements Serializable {
     }
     
     public boolean hasRole(final Principal principal, final String role) {
-        if ("ADMIN".equals(role)) {
+        if ("ADMIN".equals(role)) {      
             return connectedUser.getUserType()==SempicUserType.ADMIN;
         }
-        else {
+        else {            
             return true;
         }
     }
@@ -169,7 +173,7 @@ public class SessionTools implements Serializable {
      }
      
      
-     private static String buildViewParams(String viewID, Map<String,String> params) {
+    private static String buildViewParams(String viewID, Map<String,String> params) {
          if (params!=null && !params.isEmpty()) {
             StringBuilder sb = new StringBuilder(viewID);
             sb.append('?');

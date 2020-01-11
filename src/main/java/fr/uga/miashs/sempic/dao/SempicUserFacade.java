@@ -15,6 +15,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
+import javax.swing.*;
 
 /**
  *
@@ -48,6 +49,13 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
     }
     
     
+    public SempicUser readEager(long id){
+        EntityGraph entityGraph = this.getEntityManager().getEntityGraph("graph.SempicUser.groups-memberOf");
+        return (SempicUser) getEntityManager().createQuery("SELECT u FROM SempicUser u WHERE u.id=:id")
+                .setParameter("id", id)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .getSingleResult();
+    }
     
     public SempicUser login(String email, String password) throws SempicModelException {
         Query q = getEntityManager().createNamedQuery("query.SempicUser.readByEmail");
@@ -65,5 +73,9 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
         return (SempicUser) q.getSingleResult();
     }
     
+    public void remove(Long id){
+        Query q = getEntityManager().createNamedQuery("query.SempicUser.remove");
+        q.setParameter("id", id).executeUpdate();
+    }
     
 }

@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.uga.miashs</groupId>
-    <artifactId>SempicJPA</artifactId>
+    <artifactId>Test</artifactId>
     <version>1.1</version>
     <packaging>war</packaging>
 
-    <name>SempicJPA</name>
+    <name>Test</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -44,7 +44,16 @@
             <version>2.3.2</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.uga.miashs.sempic</groupId>
+            <artifactId>SempicRDF</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

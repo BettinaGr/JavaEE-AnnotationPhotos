@@ -35,7 +35,7 @@ public class CreateUser implements Serializable {
     
     @Inject
     private SempicUserFacade userDao;
-    
+
     
 
     
@@ -76,7 +76,7 @@ public class CreateUser implements Serializable {
             userDao.create(current);
         } 
         catch (SempicModelUniqueException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("un utilisateur avec cette adresse mail existe déjà"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Un utilisateur avec cette adresse mail existe déjà !"));
             return "failure";
         }
         catch (SempicModelException ex) {
