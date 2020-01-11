@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.uga.miashs</groupId>
-    <artifactId>SempicJPA</artifactId>
-    <version>1</version>
+    <artifactId>Test</artifactId>
+    <version>1.1</version>
     <packaging>war</packaging>
 
-    <name>Projet</name>
+    <name>Test</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -43,6 +43,11 @@
             <artifactId>jakarta.faces-api</artifactId>
             <version>2.3.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+            <version>2.7.4</version>
         </dependency>
         <dependency>
             <groupId>fr.uga.miashs.sempic</groupId>
@@ -98,7 +103,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Tomee plugin for standalone deployement : mvn tomee:exec -->
+            <!-- Tomee plugin for standalone deployement : mvn package tomee:exec -->
             <plugin>
                 <groupId>org.apache.tomee.maven</groupId>
                 <artifactId>tomee-maven-plugin</artifactId>

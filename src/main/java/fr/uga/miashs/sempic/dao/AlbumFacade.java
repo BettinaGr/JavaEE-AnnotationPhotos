@@ -6,6 +6,7 @@
 package fr.uga.miashs.sempic.dao;
 
 import fr.uga.miashs.sempic.entities.SempicAlbum;
+import fr.uga.miashs.sempic.entities.SempicUser;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -24,9 +25,9 @@ public class AlbumFacade extends AbstractJpaFacade<Long,SempicAlbum>{
         Query q = getEntityManager().createNamedQuery("query.SempicAlbum.remove");
         q.setParameter("id", id).executeUpdate();
     }
-    public List<SempicAlbum> findAlbum(Long id){
+    public List<SempicAlbum> findAlbum(SempicUser u){
         Query q = getEntityManager().createNamedQuery("query.SempicAlbum.findAlbum");
-        q.setParameter("id", id).executeUpdate();
+        q.getResultList();
         return super.find((CriteriaQuery) q);
     }
 }

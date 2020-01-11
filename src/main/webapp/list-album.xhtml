@@ -16,7 +16,7 @@ and open the template in the editor.
     <h:body>
         <h1>Liste des albums</h1>
         <f:metadata>
-            <f:viewParam name="ownerId" value="#{listAlbums.ownerId}" />
+            <f:viewParam name="userId" value="#{listAlbums.ownerId}" />
         </f:metadata>
         <h:dataTable id="albums" value="#{listAlbums.dataModel}" var="album">
             <h:column>

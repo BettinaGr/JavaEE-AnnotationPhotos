@@ -45,7 +45,7 @@ public class ListAlbums implements Serializable{
     public DataModel<SempicAlbum> getDataModel() {
         if (dataModel == null) {
             //dataModel = new ListDataModel<>(albumDao.findAll());
-            dataModel = new ListDataModel<>(albumDao.findAlbum(Long.valueOf(17)));
+            dataModel = new ListDataModel<>(albumDao.findAlbum(userDao.read(Long.parseLong(getOwnerId()))));
         }
         return dataModel;
     }
