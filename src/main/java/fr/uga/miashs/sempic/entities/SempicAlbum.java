@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
     ),
     @NamedQuery(
         name = "query.SempicAlbum.findAlbum",
-        query = "SELECT a FROM SempicAlbum a"
+        query = "SELECT a FROM SempicAlbum a WHERE a.owner =: owner"
     )
 })
 

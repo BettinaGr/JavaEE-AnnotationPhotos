@@ -27,7 +27,7 @@ public class AlbumFacade extends AbstractJpaFacade<Long,SempicAlbum>{
     }
     public List<SempicAlbum> findAlbum(SempicUser u){
         Query q = getEntityManager().createNamedQuery("query.SempicAlbum.findAlbum");
-        q.getResultList();
-        return super.find((CriteriaQuery) q);
+        q.setParameter("owner", u);
+        return q.getResultList();
     }
 }
