@@ -15,24 +15,24 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <h1>Liste des albums</h1>
-    </h:body>
-    <f:metadata>
-        <f:viewParam name="ownerId" value="#{listAlbums.ownerId}" />
-    </f:metadata>
-    <h:dataTable id="albums" value="#{listAlbums.dataModel}" var="album">
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Nom" />
-            </f:facet>
+        <f:metadata>
+            <f:viewParam name="ownerId" value="#{listAlbums.ownerId}" />
+        </f:metadata>
+        <h:dataTable id="albums" value="#{listAlbums.dataModel}" var="album">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Nom" />
+                </f:facet>
 
-            <h:outputText value="#{album.name}"/>
-        </h:column>
-        <h:column>
-            <h:form> 
-                <h:commandButton class="btnRemove" value="X" action="#{removeAlbum.remove}">              
-                    <f:param name = "albumId" value='#{album.id}' />  
-                </h:commandButton>  
-            </h:form>
-        </h:column>
-    </h:dataTable>
+                <h:outputText value="#{album.name}"/>
+            </h:column>
+            <h:column>
+                <h:form> 
+                    <h:commandButton class="btnRemove" value="X" action="#{removeAlbum.remove}">              
+                        <f:param name = "albumId" value='#{album.id}' />  
+                    </h:commandButton>  
+                </h:form>
+            </h:column>
+        </h:dataTable>
+    </h:body>
 </html>

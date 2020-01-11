@@ -30,7 +30,7 @@
                 <br/>
                 <h2>Liste de vos albums : </h2>
                 <br/>
-                <h:button class="btn" outcome="list-album?userId=#{sessionTools.connectedUser.id}" value="Liste des albums"/>
+                <h:button class="btn" outcome="list-album?ownerId=#{sessionTools.connectedUser.id}" value="Liste des albums"/>
             </c:otherwise>
         </c:choose>        
     </h:body>

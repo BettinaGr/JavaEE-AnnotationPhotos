@@ -24,7 +24,7 @@ public class AlbumFacade extends AbstractJpaFacade<Long,SempicAlbum>{
         Query q = getEntityManager().createNamedQuery("query.SempicAlbum.remove");
         q.setParameter("id", id).executeUpdate();
     }
-    public List<SempicAlbum> findAlbum(long id){
+    public List<SempicAlbum> findAlbum(Long id){
         Query q = getEntityManager().createNamedQuery("query.SempicAlbum.findAlbum");
         q.setParameter("id", id).executeUpdate();
         return super.find((CriteriaQuery) q);
