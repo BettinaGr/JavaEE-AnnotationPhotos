@@ -74,6 +74,8 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
     }
     
     public void remove(Long id){
+        Query qAlbum = getEntityManager().createNamedQuery("query.SempicAlbum.removeByOwner");
+        qAlbum.setParameter("owner", read(id)).executeUpdate();
         Query q = getEntityManager().createNamedQuery("query.SempicUser.remove");
         q.setParameter("id", id).executeUpdate();
     }

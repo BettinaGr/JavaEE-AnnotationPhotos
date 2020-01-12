@@ -28,8 +28,9 @@ and open the template in the editor.
             </h:column>
             <h:column>
                 <h:form> 
-                    <h:commandButton class="btnRemove" value="X" action="#{removeAlbum.remove}">              
-                        <f:param name = "albumId" value='#{album.id}' />  
+                    <h:commandButton class="btnRemove" value="X" action='#{removeAlbum.remove}'>              
+                        <f:param name = "albumId" value='#{album.id}' />
+                        <f:param name = "ownerId" value='#{album.owner.id}' />
                     </h:commandButton>  
                 </h:form>
             </h:column>

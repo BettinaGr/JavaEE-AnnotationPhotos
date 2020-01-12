@@ -5,6 +5,7 @@
  */
 package fr.uga.miashs.sempic.entities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -35,11 +37,13 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
         name = "query.SempicAlbum.findAlbum",
         query = "SELECT a FROM SempicAlbum a WHERE a.owner =: owner"
+    ),
+    @NamedQuery(
+        name = "query.SempicAlbum.removeByOwner",
+        query = "DELETE FROM SempicAlbum a WHERE a.owner =: owner"
     )
 })
-
-
-public class SempicAlbum {
+public class SempicAlbum implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -101,6 +105,6 @@ public class SempicAlbum {
     }
     @Override
     public String toString() {
-        return "Album" + "id=" + id + ", name=" + name + ", owner=" + owner + '}';
+        return "SempicAlbum={" + "id=" + id + ", name=" + name + ", owner=" + owner + '}';
     }
 }

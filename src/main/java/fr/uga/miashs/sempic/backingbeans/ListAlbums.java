@@ -8,13 +8,14 @@ package fr.uga.miashs.sempic.backingbeans;
 import fr.uga.miashs.sempic.dao.AlbumFacade;
 import fr.uga.miashs.sempic.dao.SempicUserFacade;
 import fr.uga.miashs.sempic.entities.SempicAlbum;
-import fr.uga.miashs.sempic.entities.SempicUser;
 import java.io.Serializable;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -24,10 +25,10 @@ import javax.inject.Named;
  */
 
 @Named
-@RequestScoped
-public class ListAlbums implements Serializable{
+@ViewScoped
+public class ListAlbums implements Serializable {
     
-    private SempicAlbum current;
+    private String ownerId;
     
     private DataModel<SempicAlbum> dataModel;
 
@@ -37,28 +38,24 @@ public class ListAlbums implements Serializable{
     @Inject
     private SempicUserFacade userDao;
 
-    @PostConstruct
-    public void init() {
-        current=new SempicAlbum();
-    }
     
     public DataModel<SempicAlbum> getDataModel() {
         if (dataModel == null) {
             //dataModel = new ListDataModel<>(albumDao.findAll());
+            System.out.println("data " + albumDao.findAlbum(userDao.read(Long.parseLong(getOwnerId()))).toString());
             dataModel = new ListDataModel<>(albumDao.findAlbum(userDao.read(Long.parseLong(getOwnerId()))));
         }
         return dataModel;
     }
 
     public void setOwnerId(String id) {
-        System.out.println(id); 
-        current.setOwner(userDao.read(Long.valueOf(id)));
+        System.out.println("set id list " + id); 
+        this.ownerId = id;
     }
      
     public String getOwnerId() {
-        if (current.getOwner()==null)
-            return "-1";
-        return ""+current.getOwner().getId();
+        return this.ownerId;
     }
+    
     
 }
