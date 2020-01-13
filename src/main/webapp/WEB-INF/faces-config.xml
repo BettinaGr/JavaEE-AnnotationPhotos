@@ -95,5 +95,21 @@
             <to-view-id>#{view.viewId}</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <description>Photo upload action result</description>
+        <from-view-id>/user/upload-photo.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{uploadPhoto.save()}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/user/upload-photo.xhtml?albumId=#{uploadPhoto.albumId}</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{uploadPhoto.save()}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/user/upload-photo.xhtml?albumId=#{uploadPhoto.albumId}</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>

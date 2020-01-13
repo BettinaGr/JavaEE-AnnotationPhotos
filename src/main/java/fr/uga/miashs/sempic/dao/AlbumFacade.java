@@ -30,4 +30,9 @@ public class AlbumFacade extends AbstractJpaFacade<Long,SempicAlbum>{
         q.setParameter("owner", u);
         return q.getResultList();
     }
+    public SempicAlbum findAlbumById(Long id){
+        Query q = getEntityManager().createNamedQuery("query.SempicAlbum.findAlbumById");
+        q.setParameter("id", id);
+    return (SempicAlbum) q.getSingleResult();
+    }
 }

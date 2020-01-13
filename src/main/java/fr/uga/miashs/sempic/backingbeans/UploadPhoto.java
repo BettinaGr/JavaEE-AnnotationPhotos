@@ -50,6 +50,8 @@ public class UploadPhoto implements Serializable{
     
     private SempicPhoto current;
     
+    private String albumId="9";
+    
     @Inject
     private AlbumFacade albumDao;
     
@@ -58,6 +60,7 @@ public class UploadPhoto implements Serializable{
     
     @Inject
     private PhotoFacade photoDao;
+    
     
     private static final Map <String, String> mimeTypes; 
      
@@ -71,11 +74,19 @@ public class UploadPhoto implements Serializable{
     public UploadPhoto(){
          try {
             photoStorage = new PhotoStorage();
+            System.out.println(photoStorage);
         } catch (IOException ex) {
             Logger.getLogger(UploadPhoto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void setAlbumId(String id) {
+        System.out.println("set id list " + id); 
+        this.albumId = id;
+    }
+     
+    public String getAlbumId() {
+        return this.albumId;
+    }
     @PostConstruct
     public void init() {
         current=new SempicPhoto();
@@ -87,29 +98,38 @@ public class UploadPhoto implements Serializable{
 
     public void setCurrent(SempicPhoto current) {
         this.current = current;
+        Logger.getLogger(UploadPhoto.class.getName()).log(Level.INFO, null, this.current);
     }
     
     public Part getPhoto(){
+        
         return photo;
     }
     
     public void setPhoto(Part p){
         this.photo = p;
+        System.out.println("apres " +this.photo);
     }
      public String save() throws Exception {
         try  {
             InputStream input = photo.getInputStream();
+            System.out.println("input" + input);
             String mime = photo.getContentType();
             
             if (mimeTypes.containsKey(mime)){
                 
                 String fileName = createSha1(input) + "." + mimeTypes.get(mime);
+                System.out.println("fileName" + fileName);
                 input = photo.getInputStream(); // mark(0) doesnt work, so we initialize again
             //  String fileName = "test.jpeg";
-                photoStorage.savePicture(PhotoStorage.pictureStore.resolve(fileName),input);
+                System.out.println("ffff " + input);
+                System.out.println("resolve " + PhotoStorage.UPLOADS.resolve(fileName));
+                photoStorage.savePicture(PhotoStorage.UPLOADS.resolve(fileName),input);
                 SempicPhoto p = new SempicPhoto();
                 p.setName(fileName);
-                //p.setAlbum(albumDao.getById(albumId));
+                p.setAlbum(albumDao.findAlbumById(Long.parseLong(albumId)));
+                System.out.println("ffffccc" + p);
+                System.out.println("creation en cours");
                 photoDao.create(p);
             } 
             

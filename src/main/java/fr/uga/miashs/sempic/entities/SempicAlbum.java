@@ -41,7 +41,11 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
         name = "query.SempicAlbum.removeByOwner",
         query = "DELETE FROM SempicAlbum a WHERE a.owner =: owner"
-    )
+    ),    
+    @NamedQuery(
+        name = "query.SempicAlbum.findAlbumById",
+        query = "SELECT a FROM SempicAlbum a WHERE a.id =: id"
+    ),
 })
 public class SempicAlbum implements Serializable{
     @Id

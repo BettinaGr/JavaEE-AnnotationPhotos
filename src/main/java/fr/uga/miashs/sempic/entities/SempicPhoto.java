@@ -66,24 +66,24 @@ public class SempicPhoto implements Serializable{
         this.album = album;
     }
     
-    public String getPicturePath() {
-        return PhotoStorage.pictureStore.resolve(name).toString();
-    }
-   
-    public String getThumbnailPath() throws SempicException {
-        Path pic = Paths.get(name);
-        try {
-            PhotoStorage ps = new PhotoStorage();
-            ps.getThumbnailPath(pic, 120);
-            return new PhotoStorage(PhotoStorage.thumbnailStore.resolve(String.valueOf(120)), pic).toString();
-        } catch (IOException ex) {
-            Logger.getLogger(SempicPhoto.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "";
-    }
+//    public String getPicturePath() {
+//        return PhotoStorage.getPictureStore().resolve(name).toString();
+//    }
+//   
+//    public String getThumbnailPath() throws SempicException {
+//        Path pic = Paths.get(name);
+//        try {
+//            PhotoStorage ps = new PhotoStorage();
+//            ps.getThumbnailPath(pic, 120);
+//            return new PhotoStorage(PhotoStorage.getThumbnailStore().resolve(String.valueOf(120)), pic).toString();
+//        } catch (IOException ex) {
+//            Logger.getLogger(SempicPhoto.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return "";
+//    }
     
     @Override
     public String toString() {
-        return "Photo" + "id=" + id + ", name=" + name +'}';
+        return "Photo {" + "id=" + id + ", name=" + name +'}';
     }
 }

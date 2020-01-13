@@ -32,16 +32,19 @@ import javax.servlet.ServletContext;
 public class PhotoStorage {
     private static Logger logger = Logger.getLogger(PhotoStorage.class.getName());
 
-    public static final Path pictureStore = Paths.get("C:\\Users\\Bettina\\Documents\\NetBeansProjects\\JavaEE-AnnotationPhotos\\src\\main\\webapp\\resources\\pictures");
-    public static final Path thumbnailStore = Paths.get("C:\\Users\\Bettina\\Documents\\NetBeansProjects\\JavaEE-AnnotationPhotos\\src\\main\\webapp\\resources\\thumbnails");
+    public static final Path UPLOADS = Paths.get("C:/Users/Orlane/Documents/NetBeansProject/Test/src/main/webapp/resources/files");
+    public static final Path THUMBNAILS = Paths.get("C:/Users/Orlane/Documents/NetBeansProject/Test/src/main/webapp/resources/thumbnails");
+    private Path pictureStore;
+    private Path thumbnailStore;
+    
 
     public PhotoStorage() throws IOException {
         this(Paths.get("PhotoStore"), Paths.get("ThumbnailStore"));
     }
 
     public PhotoStorage(Path pictureStore, Path thumbnailStore) throws IOException {
-        //this.pictureStore = pictureStore;
-        //this.thumbnailStore = thumbnailStore;
+        this.pictureStore = pictureStore;
+        this.thumbnailStore = thumbnailStore;
         if (Files.notExists(pictureStore)) {
             Files.createDirectories(pictureStore);
         }
@@ -52,30 +55,39 @@ public class PhotoStorage {
         logger.log(Level.INFO, "Thumbnail store location: {0}", thumbnailStore.toRealPath().toString());
     }
 
-    @Inject
-    public PhotoStorage(ServletContext context) throws IOException {
-        this(Paths.get(context.getInitParameter("PhotoStorePath")), Paths.get(context.getInitParameter("ThumbnailStorePath")));
-    }
+//    @Inject
+//    public PhotoStorage(ServletContext context) throws IOException {
+//        this(Paths.get(context.getInitParameter("PhotoStorePath")), Paths.get(context.getInitParameter("ThumbnailStorePath")));
+//    }
 
     // Normalize the path and check that we do not go before pictureStore
     // for security reasons
     // i.e. we do not allow /path/to/store + ../../ddsdd
     private static Path buildAndVerify(Path root, Path rel) throws SempicException {
+                
         Path res = root;
         res = res.resolve(rel).normalize();
         if (!res.startsWith(root)) {
+            System.out.println("Store " + res);
+            System.out.println("Path " + rel);
             throw new SempicException("Invalid path");
         }
         return res;
     }
 
     public void savePicture(Path p, InputStream data) throws SempicException {
-        Path loc = buildAndVerify(pictureStore, p);
-
+        System.out.println("save call :::: ");
+        Path loc = buildAndVerify(UPLOADS, p);
+        System.out.println("loc :::: " + loc); 
         try {
+            System.out.println("loc :::: " + Files.createDirectories(loc.getParent()));
+            System.out.println("locParent :::: " + loc.getParent());
             Files.createDirectories(loc.getParent());
+            
             Files.copy(data, loc, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("loc :::: " + Files.copy(data, loc, StandardCopyOption.REPLACE_EXISTING));
         } catch (IOException ex) {
+            System.out.println("save :::: problem"); 
             throw new SempicException("Failed to copy the photo", ex);
         }
     }
@@ -90,16 +102,16 @@ public class PhotoStorage {
                     Files.delete(loc.getParent());
                 }
 
-                /*Files.walk(thumbnailStore).filter(p -> p.endsWith(picPath)).forEach(p -> {
-                    try {
-                        Files.delete(p);
-                        if (!Files.newDirectoryStream(p.getParent()).iterator().hasNext()) {
-                            Files.delete(p.getParent());
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(PhotoStorage.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });*/
+//                Files.walk(thumbnailStore).filter(p -> p.endsWith(picPath)).forEach(p -> {
+//                    try {
+//                        Files.delete(p);
+//                        if (!Files.newDirectoryStream(p.getParent()).iterator().hasNext()) {
+//                            Files.delete(p.getParent());
+//                        }
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(PhotoStorage.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                });
 
             }
         } catch (IOException ex) {
@@ -108,7 +120,7 @@ public class PhotoStorage {
     }
     
     public Path getPicturePath(Path p) throws SempicException {
-        Path picPath = buildAndVerify(pictureStore, p);
+        Path picPath = buildAndVerify(UPLOADS, p);
         if (Files.notExists(picPath)) {
             throw new SempicException("The picture " + p + " does not exists");
         }
@@ -116,7 +128,7 @@ public class PhotoStorage {
     }
 
     public Path getThumbnailPath(Path p, int width) throws SempicException, IOException {
-        Path thumbnailPath = buildAndVerify(thumbnailStore.resolve(String.valueOf(width)), p);
+        Path thumbnailPath = buildAndVerify(THUMBNAILS.resolve(String.valueOf(width)), p);
         if (Files.notExists(thumbnailPath)) {
             Path picPath = getPicturePath(p);
             Path parent = thumbnailPath.getParent();
@@ -141,15 +153,23 @@ public class PhotoStorage {
         }
         return thumbnailPath;
     }
+    
+//    public Path getPictureStore(){
+//        return this.pictureStore;
+//    }
+//    
+//    public Path getThumbnailStore(){
+//        return this.thumbnailStore;
+//    }
 
-    /*public void emptyCache() throws IOException {
-        Files.walk(thumbnailStore).filter(p -> Files.isRegularFile(p)).forEach(p -> {
-            try {
-                Files.delete(p);
-            } catch (IOException ex) {
-                Logger.getLogger(PhotoStorage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-    }*/
+//    public void emptyCache() throws IOException {
+////        Files.walk(thumbnailStore).filter(p -> Files.isRegularFile(p)).forEach(p -> {
+////            try {
+////                Files.delete(p);
+////            } catch (IOException ex) {
+////                Logger.getLogger(PhotoStorage.class.getName()).log(Level.SEVERE, null, ex);
+////            }
+////        });
+//    }
 
 }
