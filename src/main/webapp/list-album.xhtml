@@ -34,6 +34,18 @@ and open the template in the editor.
                     </h:commandButton>  
                 </h:form>
             </h:column>
+            <h:column>
+                <h:form> 
+                    <h:button class="btnPhoto" value="Voir les photos">              
+                    </h:button>  
+                </h:form>
+            </h:column>
+            <h:column>
+                <h:form> 
+                    <h:button class="btnPhoto" value="Ajouter une photo" outcome="user/upload-photo?albumId=#{album.id}"> 
+                    </h:button>  
+                </h:form>
+            </h:column>
         </h:dataTable>
     </h:body>
 </html>

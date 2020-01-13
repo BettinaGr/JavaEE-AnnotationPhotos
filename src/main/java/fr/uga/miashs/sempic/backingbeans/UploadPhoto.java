@@ -133,7 +133,7 @@ public class UploadPhoto implements Serializable{
                     digest.update(buffer, 0, n);
                 }
             }
-            return  DatatypeConverter.printHexBinary(digest.digest());
+            return DatatypeConverter.printHexBinary(digest.digest());
 
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UploadPhoto.class.getName()).log(Level.SEVERE, null, ex);

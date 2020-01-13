@@ -70,7 +70,6 @@ public class PhotoStorage {
     }
 
     public void savePicture(Path p, InputStream data) throws SempicException {
-
         Path loc = buildAndVerify(pictureStore, p);
 
         try {
