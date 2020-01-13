@@ -84,6 +84,6 @@ public class SempicPhoto implements Serializable{
     
     @Override
     public String toString() {
-        return "Photo {" + "id=" + id + ", name=" + name +'}';
+        return "Photo {" + "id=" + id + ", name=" + name + ", album=" + album + '}';
     }
 }

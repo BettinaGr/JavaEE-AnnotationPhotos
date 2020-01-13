@@ -49,9 +49,7 @@ public class UploadPhoto implements Serializable{
     private Part photo;
     
     private SempicPhoto current;
-    
-    private String albumId="9";
-    
+       
     @Inject
     private AlbumFacade albumDao;
     
@@ -79,14 +77,9 @@ public class UploadPhoto implements Serializable{
             Logger.getLogger(UploadPhoto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void setAlbumId(String id) {
-        System.out.println("set id list " + id); 
-        this.albumId = id;
-    }
+    
      
-    public String getAlbumId() {
-        return this.albumId;
-    }
+ 
     @PostConstruct
     public void init() {
         current=new SempicPhoto();
@@ -110,7 +103,19 @@ public class UploadPhoto implements Serializable{
         this.photo = p;
         System.out.println("apres " +this.photo);
     }
-     public String save() throws Exception {
+    
+    public String getAlbumId() {
+        if(current.getAlbum()==null)
+            return "-1";
+        return ""+current.getAlbum().getId();
+    }
+    
+    public void setAlbumId(String id) {
+        System.out.println("set id list " + id); 
+        current.setAlbum(albumDao.read(Long.valueOf(id)));
+    }
+    
+    public String save() throws Exception {
         try  {
             InputStream input = photo.getInputStream();
             System.out.println("input" + input);
@@ -127,7 +132,7 @@ public class UploadPhoto implements Serializable{
                 photoStorage.savePicture(PhotoStorage.UPLOADS.resolve(fileName),input);
                 SempicPhoto p = new SempicPhoto();
                 p.setName(fileName);
-                p.setAlbum(albumDao.findAlbumById(Long.parseLong(albumId)));
+                p.setAlbum(albumDao.findAlbumById(Long.parseLong(getAlbumId())));
                 System.out.println("ffffccc" + p);
                 System.out.println("creation en cours");
                 photoDao.create(p);
