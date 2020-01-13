@@ -5,8 +5,11 @@
  */
 package fr.uga.miashs.sempic.dao;
 
+import fr.uga.miashs.sempic.entities.SempicAlbum;
 import fr.uga.miashs.sempic.entities.SempicPhoto;
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,4 +27,9 @@ public class PhotoFacade extends AbstractJpaFacade<Long,SempicPhoto>{
         super(entityClass);
     }
     
+    public List<SempicPhoto> findPhotoByAlbum(SempicAlbum album){
+        Query q = getEntityManager().createNamedQuery("query.SempicPhoto.findPhotoByAlbum");
+        q.setParameter("album", album);
+        return  q.getResultList();
+    }
 }

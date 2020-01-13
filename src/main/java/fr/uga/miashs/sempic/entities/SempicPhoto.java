@@ -19,6 +19,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
@@ -29,6 +31,16 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table
+@NamedQueries({
+@NamedQuery(
+        name = "query.SempicPhoto.findPhotoByAlbum", 
+        query = "SELECT p FROM SempicPhoto p WHERE p.album =:album"
+),
+    @NamedQuery(
+        name = "query.SempicPhoto.removeById", 
+        query = "DELETE FROM SempicPhoto p WHERE p.id =:id"
+),
+})
 public class SempicPhoto implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -66,21 +78,21 @@ public class SempicPhoto implements Serializable{
         this.album = album;
     }
     
-//    public String getPicturePath() {
-//        return PhotoStorage.getPictureStore().resolve(name).toString();
-//    }
-//   
-//    public String getThumbnailPath() throws SempicException {
-//        Path pic = Paths.get(name);
-//        try {
-//            PhotoStorage ps = new PhotoStorage();
-//            ps.getThumbnailPath(pic, 120);
-//            return new PhotoStorage(PhotoStorage.getThumbnailStore().resolve(String.valueOf(120)), pic).toString();
-//        } catch (IOException ex) {
-//            Logger.getLogger(SempicPhoto.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return "";
-//    }
+    public String getPicturePath() {
+        return PhotoStorage.UPLOADS.resolve(name).toString();
+    }
+   
+    public String getThumbnailPath() throws SempicException {
+        Path pic = Paths.get(name);
+        try {
+            PhotoStorage ps = new PhotoStorage();       
+            ps.getThumbnailPath(pic, 120);
+            return PhotoStorage.buildAndVerify(PhotoStorage.THUMBNAILSWEB.resolve(String.valueOf(120)), pic).toString();
+        } catch (IOException ex) {
+            Logger.getLogger(SempicPhoto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
     
     @Override
     public String toString() {

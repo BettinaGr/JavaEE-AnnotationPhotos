@@ -32,8 +32,9 @@ import javax.servlet.ServletContext;
 public class PhotoStorage {
     private static Logger logger = Logger.getLogger(PhotoStorage.class.getName());
 
-    public static final Path UPLOADS = Paths.get("C:/Users/Orlane/Documents/NetBeansProject/Test/src/main/webapp/resources/files");
-    public static final Path THUMBNAILS = Paths.get("C:/Users/Orlane/Documents/NetBeansProject/Test/src/main/webapp/resources/thumbnails");
+    public static final Path UPLOADS = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/files");
+    public static final Path THUMBNAILS = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/thumbnails");
+    public static final Path THUMBNAILSWEB =  Paths.get("/SempicJPA/faces/javax.faces.resource/thumbnails");
     private Path pictureStore;
     private Path thumbnailStore;
     
@@ -51,8 +52,6 @@ public class PhotoStorage {
         if (Files.notExists(thumbnailStore)) {
             Files.createDirectories(thumbnailStore);
         }
-        logger.log(Level.INFO, "Picture store location: {0}", pictureStore.toRealPath().toString());
-        logger.log(Level.INFO, "Thumbnail store location: {0}", thumbnailStore.toRealPath().toString());
     }
 
 //    @Inject
@@ -63,7 +62,7 @@ public class PhotoStorage {
     // Normalize the path and check that we do not go before pictureStore
     // for security reasons
     // i.e. we do not allow /path/to/store + ../../ddsdd
-    private static Path buildAndVerify(Path root, Path rel) throws SempicException {
+    public static Path buildAndVerify(Path root, Path rel) throws SempicException {
                 
         Path res = root;
         res = res.resolve(rel).normalize();
@@ -76,18 +75,11 @@ public class PhotoStorage {
     }
 
     public void savePicture(Path p, InputStream data) throws SempicException {
-        System.out.println("save call :::: ");
         Path loc = buildAndVerify(UPLOADS, p);
-        System.out.println("loc :::: " + loc); 
         try {
-            System.out.println("loc :::: " + Files.createDirectories(loc.getParent()));
-            System.out.println("locParent :::: " + loc.getParent());
             Files.createDirectories(loc.getParent());
-            
             Files.copy(data, loc, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("loc :::: " + Files.copy(data, loc, StandardCopyOption.REPLACE_EXISTING));
         } catch (IOException ex) {
-            System.out.println("save :::: problem"); 
             throw new SempicException("Failed to copy the photo", ex);
         }
     }
@@ -101,18 +93,16 @@ public class PhotoStorage {
                 if (!Files.newDirectoryStream(loc.getParent()).iterator().hasNext()) {
                     Files.delete(loc.getParent());
                 }
-
-//                Files.walk(thumbnailStore).filter(p -> p.endsWith(picPath)).forEach(p -> {
-//                    try {
-//                        Files.delete(p);
-//                        if (!Files.newDirectoryStream(p.getParent()).iterator().hasNext()) {
-//                            Files.delete(p.getParent());
-//                        }
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(PhotoStorage.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                });
-
+                
+            for (Path p : Files.newDirectoryStream(THUMBNAILS)) {
+                Path tp = buildAndVerify(p, picPath);
+                Files.deleteIfExists(tp);
+                try {
+                    Files.deleteIfExists(tp.getParent());
+                } catch (IOException e) {
+                    System.out.println("REPERTOIRE NON VIDE");
+                }
+            }
             }
         } catch (IOException ex) {
             throw new SempicException("Failed to copy the photo", ex);
@@ -128,14 +118,23 @@ public class PhotoStorage {
     }
 
     public Path getThumbnailPath(Path p, int width) throws SempicException, IOException {
+        System.out.println("thumb path call :::: " + p + "           " + width);
         Path thumbnailPath = buildAndVerify(THUMBNAILS.resolve(String.valueOf(width)), p);
+        System.out.println("thumb path build :::: " + thumbnailPath);
         if (Files.notExists(thumbnailPath)) {
+            System.out.println("path not exist");
             Path picPath = getPicturePath(p);
+            System.out.println("pic path :::: " + picPath);
             Path parent = thumbnailPath.getParent();
+            System.out.println("thumb path parent :::: " + parent);
             if (Files.notExists(parent)) {
+                System.out.println("parent thumb not exist");
                 Files.createDirectories(parent);
             }
+
+            System.out.println("bim :: " + picPath.toFile());
             BufferedImage bim = ImageIO.read(picPath.toFile());
+            System.out.println("bim :: " + bim);
             int height = (int) (bim.getHeight() * (((double) width) / bim.getWidth()));
             Image resizedImg = bim.getScaledInstance(width, height, Image.SCALE_FAST);
             BufferedImage rBimg = new BufferedImage(width, height, bim.getType());
@@ -147,6 +146,7 @@ public class PhotoStorage {
 
             // Dispose the Graphics object, we no longer need it
             g.dispose();
+            
             Files.createFile(thumbnailPath);
             ImageIO.write(rBimg, "png", thumbnailPath.toFile());
 

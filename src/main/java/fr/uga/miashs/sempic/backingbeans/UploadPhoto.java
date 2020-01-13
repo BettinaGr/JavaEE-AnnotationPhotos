@@ -124,11 +124,8 @@ public class UploadPhoto implements Serializable{
             if (mimeTypes.containsKey(mime)){
                 
                 String fileName = createSha1(input) + "." + mimeTypes.get(mime);
-                System.out.println("fileName" + fileName);
                 input = photo.getInputStream(); // mark(0) doesnt work, so we initialize again
             //  String fileName = "test.jpeg";
-                System.out.println("ffff " + input);
-                System.out.println("resolve " + PhotoStorage.UPLOADS.resolve(fileName));
                 photoStorage.savePicture(PhotoStorage.UPLOADS.resolve(fileName),input);
                 SempicPhoto p = new SempicPhoto();
                 p.setName(fileName);
