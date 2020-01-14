@@ -32,27 +32,30 @@ import javax.servlet.ServletContext;
 public class PhotoStorage {
     private static Logger logger = Logger.getLogger(PhotoStorage.class.getName());
 
-    public static final Path UPLOADS = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/files");
+    public static final Path PICTURESTORE = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/files");
     public static final Path THUMBNAILS = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/thumbnails");
     public static final Path THUMBNAILSWEB =  Paths.get("/SempicJPA/faces/javax.faces.resource/thumbnails");
-    private Path pictureStore;
-    private Path thumbnailStore;
     
 
     public PhotoStorage() throws IOException {
-        this(Paths.get("PhotoStore"), Paths.get("ThumbnailStore"));
+        if (Files.notExists(PICTURESTORE)) {
+            Files.createDirectories(PICTURESTORE);
+        }
+        if (Files.notExists(THUMBNAILS)) {
+            Files.createDirectories(THUMBNAILS);
+        }
     }
 
-    public PhotoStorage(Path pictureStore, Path thumbnailStore) throws IOException {
-        this.pictureStore = pictureStore;
-        this.thumbnailStore = thumbnailStore;
-        if (Files.notExists(pictureStore)) {
-            Files.createDirectories(pictureStore);
-        }
-        if (Files.notExists(thumbnailStore)) {
-            Files.createDirectories(thumbnailStore);
-        }
-    }
+//    public PhotoStorage(Path pictureStore, Path thumbnailStore) throws IOException {
+//        this.pictureStore = pictureStore;
+//        this.thumbnailStore = thumbnailStore;
+//        if (Files.notExists(pictureStore)) {
+//            Files.createDirectories(pictureStore);
+//        }
+//        if (Files.notExists(thumbnailStore)) {
+//            Files.createDirectories(thumbnailStore);
+//        }
+//    }
 
 //    @Inject
 //    public PhotoStorage(ServletContext context) throws IOException {
@@ -67,15 +70,13 @@ public class PhotoStorage {
         Path res = root;
         res = res.resolve(rel).normalize();
         if (!res.startsWith(root)) {
-            System.out.println("Store " + res);
-            System.out.println("Path " + rel);
             throw new SempicException("Invalid path");
         }
         return res;
     }
 
     public void savePicture(Path p, InputStream data) throws SempicException {
-        Path loc = buildAndVerify(UPLOADS, p);
+        Path loc = buildAndVerify(PICTURESTORE, p);
         try {
             Files.createDirectories(loc.getParent());
             Files.copy(data, loc, StandardCopyOption.REPLACE_EXISTING);
@@ -85,7 +86,7 @@ public class PhotoStorage {
     }
 
     public void deletePicture(Path picPath) throws SempicException {
-        Path loc = buildAndVerify(pictureStore, picPath);
+        Path loc = buildAndVerify(PICTURESTORE, picPath);
 
         try {
             if (Files.deleteIfExists(loc)) {
@@ -94,23 +95,24 @@ public class PhotoStorage {
                     Files.delete(loc.getParent());
                 }
                 
-            for (Path p : Files.newDirectoryStream(THUMBNAILS)) {
-                Path tp = buildAndVerify(p, picPath);
-                Files.deleteIfExists(tp);
-                try {
-                    Files.deleteIfExists(tp.getParent());
-                } catch (IOException e) {
-                    System.out.println("REPERTOIRE NON VIDE");
+                //Suppression dans le ThumbNails également :
+                for (Path p : Files.newDirectoryStream(THUMBNAILS)) {
+                    Path tp = buildAndVerify(p, picPath.getFileName());
+                    Files.deleteIfExists(tp);
+                    try {
+                        Files.deleteIfExists(tp.getParent());
+                    } catch (IOException e) {
                 }
-            }
+        }
+                
             }
         } catch (IOException ex) {
-            throw new SempicException("Failed to copy the photo", ex);
+            throw new SempicException("Failed to delete the photo", ex);
         }
     }
     
     public Path getPicturePath(Path p) throws SempicException {
-        Path picPath = buildAndVerify(UPLOADS, p);
+        Path picPath = buildAndVerify(PICTURESTORE, p);
         if (Files.notExists(picPath)) {
             throw new SempicException("The picture " + p + " does not exists");
         }
@@ -118,23 +120,17 @@ public class PhotoStorage {
     }
 
     public Path getThumbnailPath(Path p, int width) throws SempicException, IOException {
-        System.out.println("thumb path call :::: " + p + "           " + width);
         Path thumbnailPath = buildAndVerify(THUMBNAILS.resolve(String.valueOf(width)), p);
-        System.out.println("thumb path build :::: " + thumbnailPath);
-        if (Files.notExists(thumbnailPath)) {
-            System.out.println("path not exist");
+        
+//        Test sur l'existance du fichier à transformer en Thumnails sinon erreur au remove car le fichier parent n'existe plus :
+        if (Files.notExists(thumbnailPath) && Files.exists(buildAndVerify(PICTURESTORE, p))) {
             Path picPath = getPicturePath(p);
-            System.out.println("pic path :::: " + picPath);
             Path parent = thumbnailPath.getParent();
-            System.out.println("thumb path parent :::: " + parent);
             if (Files.notExists(parent)) {
-                System.out.println("parent thumb not exist");
                 Files.createDirectories(parent);
             }
 
-            System.out.println("bim :: " + picPath.toFile());
             BufferedImage bim = ImageIO.read(picPath.toFile());
-            System.out.println("bim :: " + bim);
             int height = (int) (bim.getHeight() * (((double) width) / bim.getWidth()));
             Image resizedImg = bim.getScaledInstance(width, height, Image.SCALE_FAST);
             BufferedImage rBimg = new BufferedImage(width, height, bim.getType());

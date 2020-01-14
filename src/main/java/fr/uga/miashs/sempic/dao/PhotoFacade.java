@@ -5,10 +5,14 @@
  */
 package fr.uga.miashs.sempic.dao;
 
+import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.entities.SempicAlbum;
 import fr.uga.miashs.sempic.entities.SempicPhoto;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.Query;
 
 /**
@@ -18,7 +22,7 @@ import javax.persistence.Query;
 
 @Stateless
 public class PhotoFacade extends AbstractJpaFacade<Long,SempicPhoto>{
-
+    
     public PhotoFacade() {
         super(SempicPhoto.class);
     }

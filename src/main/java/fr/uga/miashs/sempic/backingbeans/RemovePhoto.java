@@ -68,27 +68,15 @@ public class RemovePhoto {
       this.picPath = picPath;
     }
     
-    public String getthPath() {
-        return thPath;
-    }
 
-    public void setthPath(String thPath) {
-      this.thPath = thPath;
-    }
-    
-    public void remove() throws SempicException{
+    public void remove() throws SempicException {
         FacesContext fc = FacesContext.getCurrentInstance();
-       
-        //photoStorage.deletePicture(Paths.get(current.getThumbnailPath()));*/
+        
         this.id = getIdParam(fc);
         this.id2 = Long.parseLong(this.id);
         photoDao.remove(this.id2);
-        
-        this.picPath = getPicPathParam(fc);
-        photoStorage.deletePicture(Paths.get(this.picPath));
-        
-        this.thPath = getThPathParam(fc);
-        photoStorage.deletePicture(Paths.get(this.thPath));
+       
+        photoStorage.deletePicture(Paths.get(getPicPathParam(fc)));
     }
     
     //get value from "f:param"
@@ -100,10 +88,7 @@ public class RemovePhoto {
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("photoPath");
     }  
-    public String getThPathParam(FacesContext fc){
-        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
-        return params.get("photoThPath");
-    }  
+
     public String getAlbumId(FacesContext fc){
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("albumId");

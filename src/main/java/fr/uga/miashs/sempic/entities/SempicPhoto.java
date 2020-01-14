@@ -10,6 +10,7 @@ import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.dao.PhotoStorage;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -83,15 +84,29 @@ public class SempicPhoto implements Serializable{
     }
     
     public String getPicturePath() {
-        return PhotoStorage.UPLOADS.resolve(name).toString();
+        return PhotoStorage.PICTURESTORE.resolve(name).toString();
     }
    
+    public String getThumbnailPathWeb() throws SempicException {
+        Path pic = Paths.get(name);
+        try {
+            PhotoStorage ps = new PhotoStorage();   
+            System.out.println("coucou ghjbvghnbv" + pic);
+            ps.getThumbnailPath(pic, 120);
+            return PhotoStorage.buildAndVerify(PhotoStorage.THUMBNAILSWEB.resolve(String.valueOf(120)), pic).toString();
+        
+        } catch (IOException ex) {
+            Logger.getLogger(SempicPhoto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
     public String getThumbnailPath() throws SempicException {
         Path pic = Paths.get(name);
         try {
             PhotoStorage ps = new PhotoStorage();       
             ps.getThumbnailPath(pic, 120);
-            return PhotoStorage.buildAndVerify(PhotoStorage.THUMBNAILSWEB.resolve(String.valueOf(120)), pic).toString();
+            return PhotoStorage.buildAndVerify(PhotoStorage.THUMBNAILS.resolve(String.valueOf(120)), pic).toString();
         } catch (IOException ex) {
             Logger.getLogger(SempicPhoto.class.getName()).log(Level.SEVERE, null, ex);
         }
