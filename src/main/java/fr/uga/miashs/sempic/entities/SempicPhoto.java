@@ -36,10 +36,14 @@ import javax.validation.constraints.NotNull;
         name = "query.SempicPhoto.findPhotoByAlbum", 
         query = "SELECT p FROM SempicPhoto p WHERE p.album =:album"
 ),
-    @NamedQuery(
-        name = "query.SempicPhoto.removeById", 
-        query = "DELETE FROM SempicPhoto p WHERE p.id =:id"
+@NamedQuery(
+    name = "query.SempicPhoto.removeById", 
+    query = "DELETE FROM SempicPhoto p WHERE p.id =:id"
 ),
+@NamedQuery(
+    name = "query.SempicPhoto.removeByAlbum",
+    query = "DELETE FROM SempicPhoto p WHERE p.album =:album"
+)  
 })
 public class SempicPhoto implements Serializable{
     

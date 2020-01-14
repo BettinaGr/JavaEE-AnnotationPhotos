@@ -21,12 +21,6 @@ and open the template in the editor.
         </f:metadata>
         <h1>Photos de l'album : #{listPhotos.getAlbumName()}</h1>
         <h:dataTable id="photos" value="#{listPhotos.dataModel}" var="photo">
-<!--            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Nom" />
-                </f:facet>
-                <h:outputText value="#{photo.name}"/>
-            </h:column>-->
             <h:column>
                 <h:graphicImage value="#{photo.getThumbnailPath()}" />
             </h:column>
@@ -34,6 +28,9 @@ and open the template in the editor.
                 <h:form> 
                     <h:commandButton class="btnRemove" value="X" action='#{removePhoto.remove}'>              
                         <f:param name = "photoId" value='#{photo.id}' />
+                        <f:param name = "photoPath" value='#{photo.getPicturePath()}' />
+                        <f:param name= "photoThPath" value="#{photo.getThumbnailPath()}" />
+                        <f:param name = "albumId" value='#{photo.album.id}' />
                     </h:commandButton>  
                 </h:form>
             </h:column>

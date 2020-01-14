@@ -32,4 +32,9 @@ public class PhotoFacade extends AbstractJpaFacade<Long,SempicPhoto>{
         q.setParameter("album", album);
         return  q.getResultList();
     }
+    
+    public void remove(Long id){
+        Query q = getEntityManager().createNamedQuery("query.SempicPhoto.removeById");
+        q.setParameter("id", id).executeUpdate();
+    }
 }
