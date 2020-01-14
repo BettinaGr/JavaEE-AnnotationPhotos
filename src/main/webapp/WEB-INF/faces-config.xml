@@ -102,7 +102,7 @@
         <navigation-case>
             <from-action>#{uploadPhoto.save()}</from-action>
             <from-outcome>success</from-outcome>
-            <to-view-id>/user/view-album.xhtml?albumId=#{uploadPhoto.albumId}</to-view-id>
+            <to-view-id>/home.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
