@@ -8,14 +8,13 @@ package fr.uga.miashs.sempic.backingbeans;
 import fr.uga.miashs.sempic.SempicException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import fr.uga.miashs.sempic.rdf.SempicRDFStore;
-import fr.uga.miashs.sempic.rdf.Namespaces;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.view.ViewScoped;
 import org.apache.jena.rdf.model.Resource;
-
+import fr.uga.miashs.sempic.rdf.Namespaces;
+import fr.uga.miashs.sempic.rdf.SempicRDFStore;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 /**
@@ -35,7 +34,7 @@ public class Recherche implements Serializable{
     
     private String takenBy;
     
-    private List<Resource> depicts;
+    private List<String> depicts;
     
     private SempicRDFStore rdf = new SempicRDFStore();
     
@@ -94,11 +93,34 @@ public class Recherche implements Serializable{
 //    }
     
     private String getResource(String r) {
-        return Namespaces.photoNS+"#"+r;
+        if(r!= null && r!= "") 
+            return Namespaces.photoNS+"#"+r;
+        else
+            return null;
     }
     
-    public void search() throws NoSuchFieldException  { 
-        System.out.println(rdf.searchPhotos(null, null, null, getResource(where), null, -1).size());
+    private List<String> getDepicts() {
+        depicts = new ArrayList<String>();
+        if (what != null) {
+            String[] whatSplit = (what.split("\\s*(;\\s*)+"));
+            for (String split : whatSplit) {
+                if(!"".equals(split))
+                    depicts.add(Namespaces.photoNS+"#"+split);
+            }
+        }     
+        if (who != null) {
+            String[] whoSplit = (who.split("\\s*(;\\s*)+"));
+            for (String split : whoSplit) {
+                if(!"".equals(split))
+                    depicts.add(Namespaces.photoNS+"#"+split);
+            }
+        }  
+        System.out.println("DEPICTS   " + depicts);
+        return depicts;
+    }
+    
+    public void search() { 
+        System.out.println(rdf.searchPhotos(getDepicts(), getResource(takenBy), getResource(where), -1).size());
         System.out.println("what " + what + " where " + where + " who  " + who + "userId  " + userId);
     }
 }
