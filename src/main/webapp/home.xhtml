@@ -31,6 +31,10 @@
                 <h2>Liste de vos albums : </h2>
                 <br/>
                 <h:button class="btn" outcome="list-album?userId=#{sessionTools.connectedUser.id}" value="Liste des albums"/>
+                <br/>
+                <h2>Rechercher : </h2>
+                <br/>
+                <h:button class="btn" outcome="/user/Recherche?userId=#{sessionTools.connectedUser.id}" value="Rechercher"/>
             </c:otherwise>
         </c:choose>        
     </h:body>
