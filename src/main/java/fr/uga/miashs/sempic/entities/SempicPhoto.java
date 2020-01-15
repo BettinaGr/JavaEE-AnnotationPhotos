@@ -46,15 +46,20 @@ import javax.validation.constraints.NotNull;
     query = "DELETE FROM SempicPhoto p WHERE p.album =:album"
 )  
 })
+// Entité qui correspond à une photo
 public class SempicPhoto implements Serializable{
-    
-    private static final long serialVersionUID = 1L;
+
+    // Clé primaire
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
+    // Nom de la photo
     private String name;
     
+    // Déclaration d'une relation ManyToOne entre SempicPhoto et SempicAlbum
+    // Un album peut contenir plusieurs photos
+    // Plusieurs photos peuvent être dans un même album
     @NotNull
     @ManyToOne
     private SempicAlbum album;
@@ -63,7 +68,9 @@ public class SempicPhoto implements Serializable{
         
     }
     
-     public long getId() {
+    // Définition des accesseurs (get/set) pour que les propriétés d'un SempicPhoto soient utilisables
+    
+    public long getId() {
         return id;
     }
 

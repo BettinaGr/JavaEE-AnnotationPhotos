@@ -22,26 +22,37 @@ import javax.validation.constraints.NotNull;
     @UniqueConstraint(name = "UniqueGroupName", columnNames = {"name"})
 })
 
+// Entité qui correspond à un groupe
 public class SempicGroup implements Serializable {
 
+    // Clé primaire
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
+    // Nom du groupe
     @NotBlank(message="Il faut un nom de groupe")
     private String name;
     
+    // Déclaration d'une relation ManyToOne entre SempicUser et SempicGroup
+    // Un utilisateur peut être propriétaire de plusieurs groupes
+    // Plusieurs groupes peuvent être la propriété d'un seul utilisateur
     @NotNull
     @ManyToOne
     private SempicUser owner;
     
+    // Déclaration d'une relation ManyToMany entre SempicUser et SempicGroup
+    // Un utilisateur peut être membre de plusieurs groupes
+    // Un groupe peut avoir plusieurs membres c'est à dire plusieurs SempicUser
     @ManyToMany
     private Set<SempicUser> members;
 
+    
     public SempicGroup() {
         
     }
     
+    // Définition des accesseurs (get/set) pour que les propriétés d'un SempicUser soient utilisables
     public long getId() {
         return id;
     }

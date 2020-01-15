@@ -9,6 +9,7 @@ package fr.uga.miashs.sempic.entities;
  *
  * @author Jerome David <jerome.david@univ-grenoble-alpes.fr>
  */
+// Enumération des types d'utilisateurs (Admin et User)
 public enum SempicUserType {
     ADMIN,
     USER;

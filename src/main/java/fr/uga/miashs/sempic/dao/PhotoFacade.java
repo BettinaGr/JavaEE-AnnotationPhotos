@@ -20,9 +20,11 @@ import javax.persistence.Query;
  * @author Bettina
  */
 
+// Exécution de requêtes dans la base de données SempicPhoto
 @Stateless
 public class PhotoFacade extends AbstractJpaFacade<Long,SempicPhoto>{
     
+    // Constructeurs
     public PhotoFacade() {
         super(SempicPhoto.class);
     }
@@ -31,12 +33,22 @@ public class PhotoFacade extends AbstractJpaFacade<Long,SempicPhoto>{
         super(entityClass);
     }
     
+    /**
+     * Listes des SempicPhoto présents dans un album
+     *
+     * @param album = SempicAlbum qui contient la liste des SempicPhoto retournée
+     */
     public List<SempicPhoto> findPhotoByAlbum(SempicAlbum album){
         Query q = getEntityManager().createNamedQuery("query.SempicPhoto.findPhotoByAlbum");
         q.setParameter("album", album);
         return  q.getResultList();
     }
     
+    /**
+     * Supprime la SempicPhoto de la base de données
+     *
+     * @param id = identifiant de la photo à supprimer
+     */
     public void remove(Long id){
         Query q = getEntityManager().createNamedQuery("query.SempicPhoto.removeById");
         q.setParameter("id", id).executeUpdate();

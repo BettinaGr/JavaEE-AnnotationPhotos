@@ -22,16 +22,25 @@ import javax.swing.*;
  * @author Jerome David <jerome.david@univ-grenoble-alpes.fr>
  */
 
+// Exécution de requêtes dans la base de données SempicUser
 @Stateless
 public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
 
     @Inject
     private transient Pbkdf2PasswordHash hashAlgo;
     
+    // Constructeur
     public SempicUserFacade() {
         super(SempicUser.class);
     }
 
+    /**
+     * Création d'un SempicUser grâce à la fonction create héritée de AbstractJpaFacade
+     *
+     * @param user = SempicUser a ajouter à la base de données
+     * @return l'identifiant du SempicUser créé
+     * @throws fr.uga.miashs.sempic.SempicModelException
+     */
     @Override
     public Long create(SempicUser user) throws SempicModelException {
         if (user.getPassword()!=null) {
@@ -40,6 +49,10 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
         return super.create(user);
     }
     
+     /**
+     * 
+     * @return Liste de tous les SempicUser 
+     */
     @Override
     public List<SempicUser> findAll() {
         EntityGraph entityGraph = this.getEntityManager().getEntityGraph("graph.SempicUser.groups-memberOf");
@@ -48,7 +61,11 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
             .getResultList();
     }
     
-    
+    /**
+     *
+     * @param id = identifiant unique du SempicUser recherché
+     * @return le SempicUser ayant l'identifiant unique = id
+     */
     public SempicUser readEager(long id){
         EntityGraph entityGraph = this.getEntityManager().getEntityGraph("graph.SempicUser.groups-memberOf");
         return (SempicUser) getEntityManager().createQuery("SELECT u FROM SempicUser u WHERE u.id=:id")
@@ -57,6 +74,14 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
                 .getSingleResult();
     }
     
+     /**
+     * Retourne une exception si aucun utilisateur ne correspond
+     *
+     * @param email = email du SempicUser
+     * @param password = mot de passe du SempicUser
+     * @return le SempicUser dont l'email et le mot de passe hashé correspondent
+     * @throws fr.uga.miashs.sempic.SempicModelException
+     */
     public SempicUser login(String email, String password) throws SempicModelException {
         Query q = getEntityManager().createNamedQuery("query.SempicUser.readByEmail");
         q.setParameter("email", email);
@@ -67,13 +92,25 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
         throw new SempicModelException("login failed");
     }
 
+    /**
+     *
+     * @param email = email du SempicUser
+     * @return le SempicUser dont l'email et le mot de passe hashé correspondent
+     */
     public SempicUser readByEmail(String email) {
         Query q = getEntityManager().createNamedQuery("query.SempicUser.readByEmail");
         q.setParameter("email", email);
         return (SempicUser) q.getSingleResult();
     }
     
+     /**
+     * Supprime le SempicUser de la base de données
+     *
+     * @param id = id de l'utilisateur à supprimer
+     * 
+     */
     public void remove(Long id){
+        // Lorsqu'un utilisateur a des albums on les retire de la base de données SempicAlbum
         Query qAlbum = getEntityManager().createNamedQuery("query.SempicAlbum.removeByOwner");
         qAlbum.setParameter("owner", read(id)).executeUpdate();
         Query q = getEntityManager().createNamedQuery("query.SempicUser.remove");

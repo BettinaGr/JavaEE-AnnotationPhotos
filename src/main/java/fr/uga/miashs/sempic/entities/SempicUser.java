@@ -46,42 +46,55 @@ import javax.validation.constraints.*;
   }
 )
 
-
+// Entité qui correspond à un utilisateur
 public class SempicUser implements Serializable {
     public final static String PREFIX="/users/";
     
+    // Clé primaire
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    // Nom
     private String lastname;
     
+    // Prénom
     private String firstname;
     
+    // Mail
     @Email
     private String email;
     
+    // Mot de passe hashé
     private String passwordHash;
     
+    // Mot de passe 
     @Transient
     private transient String password;
     
+    // Déclaration d'une relation OneToMany entre SempicUser et SempicGroup
+    // Un utilisateur peut être propriétaire de plusieurs groupes
+    // Plusieurs groupes peuvent être la propriété d'un utilisateur
     @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
     private Set<SempicGroup> groups;
 
+    // Déclaration d'une relation ManyToMany entre SempicUser et SempicGroup
+    // Un utilisateur peut être membre de plusieurs groupes
+    // Un groupe peut avoir plusieurs membres c'est à dire plusieurs SempicUser
     @ManyToMany(mappedBy = "members" )//,cascade = CascadeType.REMOVE)
     private Set<SempicGroup> memberOf;
     
-    
+    // Type de l'utilisateur
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition="VARCHAR(5)")
     private SempicUserType userType;
     
-
+    // Constructeur de SempicUser, initialise le type de l'utisation à User
     public SempicUser() {
         userType=SempicUserType.USER;
     }
     
+    // Définition des accesseurs (get/set) pour que les propriétés d'un SempicUser soient utilisables
     public long getId() {
         return id;
     }
@@ -135,7 +148,6 @@ public class SempicUser implements Serializable {
         if (memberOf==null) return Collections.emptySet();
         return Collections.unmodifiableSet(memberOf);
     }
-
     
     public SempicUserType getUserType() {
         return userType;

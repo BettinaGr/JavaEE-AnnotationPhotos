@@ -47,13 +47,20 @@ import javax.validation.constraints.NotNull;
         query = "SELECT a FROM SempicAlbum a WHERE a.id =: id"
     ),
 })
+
+// Entité qui correspond à un album
 public class SempicAlbum implements Serializable{
+    // Clé primaire
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
+    // Nom de l'album
     private String name;
     
+    // Déclaration d'une relation ManyToOne entre SempicUser et SempicAlbum
+    // Un utilisateur peut être propriétaire de plusieurs albums
+    // Plusieurs albums peuvent être la propriété d'un seul utilisateur
     @NotNull
     @ManyToOne
     private SempicUser owner;
@@ -62,6 +69,7 @@ public class SempicAlbum implements Serializable{
         
     }
     
+    // Définition des accesseurs (get/set) pour que les propriétés d'un SempicUser soient utilisables
     public long getId() {
         return id;
     }
