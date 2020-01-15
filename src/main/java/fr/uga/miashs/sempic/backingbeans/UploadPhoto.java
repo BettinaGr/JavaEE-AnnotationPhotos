@@ -41,7 +41,6 @@ import javax.xml.bind.DatatypeConverter;
 import jdk.internal.net.http.common.Utils;
 import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionFactory;
-
 /**
  *
  * @author Bettina
@@ -64,12 +63,10 @@ public class UploadPhoto implements Serializable{
     private PhotoFacade photoDao;
     
     
+    
     private static final Map <String, String> mimeTypes; 
      
-     private final static String ENDPOINT= "http://localhost:3030/sempic/";
-    public final static String ENDPOINT_QUERY = ENDPOINT+"sparql"; // SPARQL endpoint
-    public final static String ENDPOINT_UPDATE = ENDPOINT+"update"; // SPARQL UPDATE endpoint
-    public final static String ENDPOINT_GSP = ENDPOINT+"data"; // Graph Store Protocol
+    
     
     static {
         Map <String, String> aMap = new HashMap <String, String>();
@@ -142,11 +139,7 @@ public class UploadPhoto implements Serializable{
                 System.out.println("ffffccc" + p);
                 System.out.println("creation en cours");
                 photoDao.create(p);
-                
-                /*RDFConnection cnx = RDFConnectionFactory.connect(ENDPOINT_QUERY, ENDPOINT_UPDATE, ENDPOINT_GSP);
-                BasicSempicRDFStore s = new BasicSempicRDFStore();
-                s.createPhoto(current.getId(), current.getAlbum().getId(), current.getAlbum().getOwner().getId());
-                cnx.close(); */
+                                
             } 
             
         }

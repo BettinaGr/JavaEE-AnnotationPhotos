@@ -8,8 +8,6 @@ package fr.uga.miashs.sempic.backingbeans;
 import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.dao.PhotoFacade;
 import fr.uga.miashs.sempic.entities.SempicPhoto;
-import fr.uga.miashs.sempic.rdf.BasicSempicRDFStore;
-import fr.uga.miashs.sempic.rdf.SempicRDFStore;
 import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,6 +18,9 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdfconnection.*;
+import fr.uga.miashs.sempic.rdf.SempicRDFStore;
+import javax.enterprise.context.RequestScoped;
+import fr.uga.miashs.sempic.rdf.Namespaces;
 
 /**
  *
@@ -28,60 +29,56 @@ import org.apache.jena.rdfconnection.*;
 
 @Named
 @ViewScoped
-public class AnnotatePhoto implements Serializable{
-    private final static String ENDPOINT= "http://localhost:3030/sempic/";
-    public final static String ENDPOINT_QUERY = ENDPOINT+"sparql"; // SPARQL endpoint
-    public final static String ENDPOINT_UPDATE = ENDPOINT+"update"; // SPARQL UPDATE endpoint
-    public final static String ENDPOINT_GSP = ENDPOINT+"data"; // Graph Store Protocol
+public class AnnotatePhoto implements Serializable {
     
-    private Long photoId;
+    private String photoId;
     
-    private Resource objet;
+    private String objet;
     
-    private Property propriete;
+    private String propriete;
+    
+    private SempicRDFStore rdf = new SempicRDFStore();
     
     @Inject
     private PhotoFacade photoDao;
     
     public void setPhotoId(String id) {
-        this.photoId = Long.parseLong(id);
+        this.photoId = id;
     }
      
     public String getPhotoId() {
-        return String.valueOf(this.photoId);
-    }
-       
-    public String getThumbnailPathWeb() throws SempicException {
-        return this.photoDao.read(photoId).getThumbnailPathWeb();
+        return this.photoId;
     }
     
-    public Resource getObjet() {
+       
+    public String getThumbnailPathWeb() throws SempicException {
+        return this.photoDao.read(Long.parseLong(photoId)).getThumbnailPathWeb();
+    }
+    
+    public String getObjet() {
         return objet;
     }
 
-    public void setObjet(Resource objet) {
+    public void setObjet(String objet) {
         this.objet = objet;
     }
 
-    public Property getPropriete() {
+    public String getPropriete() {
         return propriete;
     }
 
-    public void setPropriete(Property propriete) {
+    public void setPropriete(String propriete) {
         this.propriete = propriete;
     }
     public void addAnnotation(){
         
-        System.out.print("objt = "+ objet);
+        System.out.println("objt = "+ Namespaces.photoNS+"#"+objet);
+        System.out.println("prop = "+ Namespaces.photoNS+"#"+propriete);
+        System.out.println(photoDao.findPhotoById(getPhotoId()));
+        System.out.println(photoDao.findPhotoById(getPhotoId()).getAlbum());
+        System.out.println(photoDao.findPhotoById(getPhotoId()).getAlbum().getId());
+//        Resource photo = rdf.createPhoto(Long.parseLong(getPhotoId()), photoDao.findPhotoById(getPhotoId()).getAlbum().getId(), photoDao.findPhotoById(getPhotoId()).getAlbum().getOwner().getId());
+//        rdf.addAnnotation(photo, Namespaces.photoNS+"#"+getPropriete(), Namespaces.photoNS+"#"+getObjet());
         
-        /*RDFConnection cnx = RDFConnectionFactory.connect(ENDPOINT_QUERY, ENDPOINT_UPDATE, ENDPOINT_GSP);
-         
-        BasicSempicRDFStore s = new BasicSempicRDFStore();
-        Resource picture = s.readPhoto(photoId);
-
-        SempicRDFStore s2 = new SempicRDFStore();
-        s2.addAnnotation(picture, propriete, objet);
-        
-        cnx.close();  */
     }
 }

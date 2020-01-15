@@ -44,7 +44,10 @@ import javax.validation.constraints.NotNull;
 @NamedQuery(
     name = "query.SempicPhoto.removeByAlbum",
     query = "DELETE FROM SempicPhoto p WHERE p.album =:album"
-)  
+),
+@NamedQuery(
+    name = "query.SempicPhoto.findPhotoById",
+    query = "SELECT p FROM SempicPhoto p WHERE p.id =:id")
 })
 // Entité qui correspond à une photo
 public class SempicPhoto implements Serializable{

@@ -48,11 +48,7 @@ Works only for glassfish (ie JavaEE8 fully compliant server), for tomm use web.x
         hashAlgorithmParameters = { "Pbkdf2PasswordHash.Iterations=3072", 
                                     "Pbkdf2PasswordHash.Algorithm=PBKDF2WithHmacSHA512", 
                                     "Pbkdf2PasswordHash.SaltSizeBytes=64"},
-
         priority = 30)
-
-
-
 @FormAuthenticationMechanismDefinition(
         loginToContinue = @LoginToContinue(
                 loginPage = "/faces/login.xhtml",

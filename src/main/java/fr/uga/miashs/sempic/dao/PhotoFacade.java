@@ -53,4 +53,10 @@ public class PhotoFacade extends AbstractJpaFacade<Long,SempicPhoto>{
         Query q = getEntityManager().createNamedQuery("query.SempicPhoto.removeById");
         q.setParameter("id", id).executeUpdate();
     }
+    
+    public SempicPhoto findPhotoById(String id) {
+        Query q = getEntityManager().createNamedQuery("query.SempicPhoto.findPhotoById");
+        q.setParameter("id", id);
+        return (SempicPhoto) q.getSingleResult();
+    }
 }
