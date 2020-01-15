@@ -9,6 +9,7 @@ import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.dao.PhotoFacade;
 import fr.uga.miashs.sempic.dao.PhotoStorage;
 import fr.uga.miashs.sempic.entities.SempicPhoto;
+import fr.uga.miashs.sempic.rdf.BasicSempicRDFStore;
 import java.nio.file.Paths;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -77,6 +78,9 @@ public class RemovePhoto {
         photoDao.remove(this.id2);
        
         photoStorage.deletePicture(Paths.get(getPicPathParam(fc)));
+        
+        /*BasicSempicRDFStore s = new BasicSempicRDFStore();
+        s.deletePhoto(this.id2);*/
     }
     
     //get value from "f:param"

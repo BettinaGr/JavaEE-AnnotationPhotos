@@ -5,12 +5,14 @@
  */
 package fr.uga.miashs.sempic.backingbeans;
 
-import fr.uga.miashs.sempic.SempicException;
-import fr.uga.miashs.sempic.SempicModelException;
+import fr.uga.miashs.sempic.rdf.BasicSempicRDFStore;
 import fr.uga.miashs.sempic.dao.AlbumFacade;
 import fr.uga.miashs.sempic.dao.PhotoFacade;
 import fr.uga.miashs.sempic.dao.PhotoStorage;
 import fr.uga.miashs.sempic.entities.SempicPhoto;
+import static fr.uga.miashs.sempic.rdf.ExampleRDFConnection.ENDPOINT_GSP;
+import static fr.uga.miashs.sempic.rdf.ExampleRDFConnection.ENDPOINT_QUERY;
+import static fr.uga.miashs.sempic.rdf.ExampleRDFConnection.ENDPOINT_UPDATE;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +39,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
 import javax.xml.bind.DatatypeConverter;
 import jdk.internal.net.http.common.Utils;
+import org.apache.jena.rdfconnection.RDFConnection;
+import org.apache.jena.rdfconnection.RDFConnectionFactory;
 
 /**
  *
@@ -62,6 +66,11 @@ public class UploadPhoto implements Serializable{
     
     private static final Map <String, String> mimeTypes; 
      
+     private final static String ENDPOINT= "http://localhost:3030/sempic/";
+    public final static String ENDPOINT_QUERY = ENDPOINT+"sparql"; // SPARQL endpoint
+    public final static String ENDPOINT_UPDATE = ENDPOINT+"update"; // SPARQL UPDATE endpoint
+    public final static String ENDPOINT_GSP = ENDPOINT+"data"; // Graph Store Protocol
+    
     static {
         Map <String, String> aMap = new HashMap <String, String>();
         aMap.put("image/png", "png");
@@ -133,12 +142,15 @@ public class UploadPhoto implements Serializable{
                 System.out.println("ffffccc" + p);
                 System.out.println("creation en cours");
                 photoDao.create(p);
+                
+                /*RDFConnection cnx = RDFConnectionFactory.connect(ENDPOINT_QUERY, ENDPOINT_UPDATE, ENDPOINT_GSP);
+                BasicSempicRDFStore s = new BasicSempicRDFStore();
+                s.createPhoto(current.getId(), current.getAlbum().getId(), current.getAlbum().getOwner().getId());
+                cnx.close(); */
             } 
             
         }
         catch (IOException e) {
-            System.out.println("erreur upload");
-        
             return "failure";
         }
         return "success";
