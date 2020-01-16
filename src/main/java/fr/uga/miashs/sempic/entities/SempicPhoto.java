@@ -47,7 +47,12 @@ import javax.validation.constraints.NotNull;
 ),
 @NamedQuery(
     name = "query.SempicPhoto.findPhotoById",
-    query = "SELECT p FROM SempicPhoto p WHERE p.id =:id")
+    query = "SELECT p FROM SempicPhoto p WHERE p.id =:id"
+),
+@NamedQuery(
+    name = "query.SempicPhoto.findPhotosByListId",
+    query = "SELECT p FROM SempicPhoto p WHERE p.id IN (:ListId)"
+),
 })
 // Entité qui correspond à une photo
 public class SempicPhoto implements Serializable{

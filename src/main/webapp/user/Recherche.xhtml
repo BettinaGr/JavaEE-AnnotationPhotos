@@ -45,6 +45,17 @@ and open the template in the editor.
             <!-- </h:panelGrid> -->
             <h:messages globalOnly="true"/>
         </h:form>
+         <h:dataTable id="photos" value="#{recherche.dataModel}" var="photo">
+            <h:column>
+                <h:graphicImage value="#{photo.getThumbnailPathWeb()}" />
+            </h:column>
+            <h:column>
+                <h:form> 
+                    <h:button class="btnPhoto" value="Annoter cette photo" outcome="annotate-photo?photoId=#{photo.id}">
+                    </h:button>  
+                </h:form>
+            </h:column>
+        </h:dataTable>
     </h:body>
 </html>
 

@@ -6,6 +6,8 @@
 package fr.uga.miashs.sempic.backingbeans;
 
 import fr.uga.miashs.sempic.SempicException;
+import fr.uga.miashs.sempic.dao.PhotoFacade;
+import fr.uga.miashs.sempic.entities.SempicPhoto;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -15,6 +17,10 @@ import javax.faces.view.ViewScoped;
 import org.apache.jena.rdf.model.Resource;
 import fr.uga.miashs.sempic.rdf.Namespaces;
 import fr.uga.miashs.sempic.rdf.SempicRDFStore;
+import java.util.Arrays;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.inject.Inject;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 /**
@@ -38,7 +44,13 @@ public class Recherche implements Serializable{
     
     private SempicRDFStore rdf = new SempicRDFStore();
     
-    private Resource res;
+    private List<Long> resultSearch = new ArrayList<>();
+    
+    private DataModel<SempicPhoto> dataModel;
+
+    @Inject
+    private PhotoFacade photoDao;
+    
     
     public void setUserId(String id) {
         System.out.println("set id list " + id); 
@@ -57,7 +69,6 @@ public class Recherche implements Serializable{
         return this.who;
     }
     public void setWhat(String what) {
-        System.out.println("set id list " + what); 
         this.what = what;
     }
      
@@ -66,7 +77,6 @@ public class Recherche implements Serializable{
     }
     
     public void setWhere(String where) {
-        System.out.println("set id list " + where); 
         this.where = where;
     }
     
@@ -75,22 +85,11 @@ public class Recherche implements Serializable{
     }
      
     public void setTakenBy(String takenBy) {
-        System.out.println("set id list " + takenBy); 
         this.takenBy = takenBy;
     }
     public String getTakenBy() {
         return this.takenBy;
     }
-    
-//    private List<Resource> getDepicts() throws NoSuchFieldException {
-//        try {
-//            Projet.class.getDeclaredField("Yann");
-//            depicts.add(Projet.Yann);
-//        } catch (NoSuchFieldException ex) {
-//            System.out.println("field n'existe pas");
-//        }
-//        return depicts;
-//    }
     
     private String getResource(String r) {
         if(r!= null && r!= "") 
@@ -115,12 +114,26 @@ public class Recherche implements Serializable{
                     depicts.add(Namespaces.photoNS+"#"+split);
             }
         }  
-        System.out.println("DEPICTS   " + depicts);
         return depicts;
     }
     
     public void search() { 
-        System.out.println(rdf.searchPhotos(getDepicts(), getResource(takenBy), getResource(where), -1).size());
-        System.out.println("what " + what + " where " + where + " who  " + who + "userId  " + userId);
+        List<Resource> Resultat = rdf.searchPhotos(getDepicts(), getResource(takenBy), getResource(where), -1);
+        resultSearch = new ArrayList<>();
+        for (Resource res : Resultat ) {
+            String id[] = res.getURI().split("/");
+            resultSearch.add(Long.parseLong(id[id.length-1]));
+        }
+        System.out.println(resultSearch);
+    }
+    
+    public DataModel<SempicPhoto> getDataModel() {
+        if (dataModel == null && !resultSearch.isEmpty()) {
+            System.out.println("dataPhoto " + photoDao.findPhotosByListId(resultSearch));
+            dataModel = new ListDataModel<>(photoDao.findPhotosByListId(resultSearch));
+        } else if (resultSearch.isEmpty()) {
+            dataModel = null;
+        }
+        return dataModel;
     }
 }
