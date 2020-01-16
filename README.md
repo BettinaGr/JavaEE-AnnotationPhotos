@@ -148,7 +148,18 @@ WHERE {
     FILTER (?when > "2019-12-24T00:00:00"^^xsd:dateTime)
     FILTER (?when < "2019-12-31T23:59:59"^^xsd:dateTime)
   }
- ```
+  ```
+  
+* Selfie(s)
+  ```sql
+  SELECT DISTINCT ?pic (count( ?p) as ?count)
+  WHERE {
+    ?pic a ex:Picture;
+             ex:subject ?p.
+  }
+  GROUP BY ?pic
+  HAVING (?count = 1)
+  ```
 
 
 
