@@ -1,65 +1,68 @@
 # JavaEE-AnnotationPhotos
 # DURAND Virginie, GRIMARD Bettina & PITARCH Orlane
 
-Requêtes SPARQL possibles avec notre ontologie, utiliser : PREFIX ex:<http://www.semanticweb.org/ontologies/WebSemProject#>
+Requêtes SPARQL possibles avec notre ontologie, utiliser : 
+
+PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 
 ---
 
 * Photos d'une personne spécifique : Yann
  ```sql
-  SELECT ?pic
+  SELECT DISTINCT ?pic
   WHERE {
     ?pic a ex:Picture;
-        ex:subject ex:Yann.
+        ex:Subject ex:Yann.
   }
    ```
 
 * Photos de plusieurs personnes : Margaux et Ophélie
    ```sql
-  SELECT ?pic
+  SELECT DISTINCT ?pic
   WHERE {
    ?pic a ex:Picture;
-       ex:subject ex:Margaux;
-       ex:subject ex:Ophelie.
+       ex:Subject ex:Margaux;
+       ex:Subject ex:Ophelie.
   }
    ```
 
 * Photos où il y a des personnes identifiées dessus   
  ```sql
-  SELECT ?pic
+  SELECT DISTINCT ?pic
   WHERE {
     ?pic a ex:Picture;
-             ex:subject ?p.
+             ex:Subject ?p.
     ?p a ex:People.
   }
    ```
    
 * Photos où il n'y a personne dessus
  ```sql
-  SELECT ?pic
-  WHERE {
-      ?pic a ex:Picture;
-      ?s a ex:People.
-      FILTER NOT EXISTS{?pic ex:subject ?s}
-  }
+ SELECT DISTINCT ?pic
+ WHERE {
+     ?pic a ex:Picture.
+     FILTER NOT EXISTS{
+    	?pic ex:Subject ?s.
+    	?s a ex:People.}
+ }
    ```
 
 * Photos de pot de départ 
  ```sql
-  SELECT DISTINCT ?picture ?event
-  WHERE {
-    ?picture a ex:Picture;
-        ex:event ?event.
-    ?event a ex:Farewell_party.
-  }
+ SELECT ?picture
+ WHERE {
+   ?picture a ex:Picture;
+       ex:Events ?event.
+   ?event a ex:Farewell_party.
+ }
    ```
 
 * Photos de crémaillère
  ```sql
-  SELECT DISTINCT ?picture ?event
+  SELECT DISTINCT ?picture 
   WHERE {
     ?picture a ex:Picture;
-        ex:event ?event.
+        ex:Events ?event.
     ?event a ex:House-warming_party.
   }
    ```
@@ -149,6 +152,7 @@ WHERE {
   GROUP BY ?pic
   HAVING (?count = 1)
   ```
+  
 * Photos d'un type d'animal : cow
 ```sql
 SELECT DISTINCT ?pic
@@ -158,7 +162,28 @@ WHERE {
      ?a a ex:cow.
 }
   ```
-
+  
+* Photos avec un ami de Maxence
+```sql
+SELECT ?pic
+ WHERE {
+    ?pic a ex:Picture;
+	 ex:Subject ?ami.
+  	ex:Maxence ex:Friend ?ami.
+ }
+   ```
+   
+ * Photos de crémaillère décrivant Yann
+ ```sql
+ SELECT ?pic
+ WHERE {
+    ?pic a ex:Picture;
+		ex:Events ex:House-warming_party;
+  		ex:Subject ex:Yann.
+ }
+  ```
+  
+ * Photos 
 
 
   
