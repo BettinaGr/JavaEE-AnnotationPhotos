@@ -83,25 +83,24 @@ WHERE {
 
 * Photos d'un évènement : Voyage à Londres 
   
-  ```sql
+
   SELECT DISTINCT ?picture ?event
   WHERE {
     ?picture a ex:Picture;
         ex:event ?event.
     ?event a ex:Trip_to_London.
   }
-  ```
+
 
 * Photos d'un festival : Festival de Cannes
   
-  ```sql
+
   SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
              ex:event ?event.
     ?event a ex:Cannes_festival.
-  }
-  ```
+
 
 * Photos d'un salon : Salon de l'auto
   
