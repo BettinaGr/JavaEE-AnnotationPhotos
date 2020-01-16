@@ -112,3 +112,25 @@ WHERE {
     ?event a ?eventType.
     ?events rdfs:subClassOf ex:Motor_show.
   }
+  
+* Photos d’un lieu particulier : Grenoble 
+
+SELECT DISTINCT ?pic
+WHERE {
+   ?pic a ex:Picture;
+    ex:Place ?city.
+     ?city a ex:Grenoble.
+}
+
+* Photos d’un monument particulier : Eiffel_tower 
+
+SELECT DISTINCT ?pic
+WHERE {
+   ?pic a ex:Picture;
+    ex:Monument ?m.
+     ?m a ex:Eiffel_tower.
+}
+
+
+  
+  
