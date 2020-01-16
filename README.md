@@ -16,13 +16,13 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
   }
    ```
 
-* Photos de plusieurs personnes : Margaux et Ophélie
+* Photos de plusieurs personnes : Yann et Maxence
    ```sql
   SELECT DISTINCT ?pic
   WHERE {
    ?pic a ex:Picture;
-       ex:Subject ex:Margaux;
-       ex:Subject ex:Ophelie.
+       ex:Subject ex:Yann;
+       ex:Subject ex:Maxence.
   }
    ```
 
@@ -52,8 +52,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
  SELECT ?picture
  WHERE {
    ?picture a ex:Picture;
-       ex:Events ?event.
-   ?event a ex:Farewell_party.
+       ex:Events ex:Farewell_party.
  }
    ```
 
@@ -62,31 +61,26 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
   SELECT DISTINCT ?picture 
   WHERE {
     ?picture a ex:Picture;
-        ex:Events ?event.
-    ?event a ex:House-warming_party.
+        ex:Events ex:House-warming_party.
   }
    ```
 
-* Photos de crémaillère d'une personne
+ * Photos de crémaillère décrivant Yann
  ```sql
-  SELECT DISTINCT ?picture ?event
-  WHERE {
-    ?picture a ex:Picture;
-        ex:event ?event.
-    ?people a ?People.
-
-    ?event a ex:House-warming_party;
-		ex:.
-  }
-   ```
+ SELECT ?pic
+ WHERE {
+    ?pic a ex:Picture;
+	ex:Events ex:House-warming_party;
+  	ex:Subject ex:Yann.
+ }
+  ```
 
 * Photos d'un évènement : Voyage à Londres
  ```sql
   SELECT DISTINCT ?picture ?event
   WHERE {
     ?picture a ex:Picture;
-        ex:event ?event.
-    ?event a ex:Trip_to_London.
+        ex:Events ex:Trip_to_London.
   }
  ```
 
@@ -95,8 +89,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
   SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
-             ex:event ?event.
-    ?event a ex:Cannes_festival.
+         ex:Events ex:Cannes_festival.
   }
  ```
 * Photos d'un salon: salon de l'auto
@@ -104,10 +97,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
   SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
-             ex:event ?event.
-  
-    ?event a ?eventType.
-    ?events rdfs:subClassOf ex:Motor_show.
+         ex:Events ex:Motor_show.
   }
    ```
   
@@ -116,8 +106,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 SELECT DISTINCT ?pic
 WHERE {
    ?pic a ex:Picture;
-    ex:Place ?city.
-     ?city a ex:Grenoble.
+    	ex:Where ex:Grenoble.
 }
  ```
 
@@ -126,8 +115,7 @@ WHERE {
 SELECT DISTINCT ?pic
 WHERE {
    ?pic a ex:Picture;
-    ex:Monument ?m.
-     ?m a ex:Eiffel_tower.
+    ex:Subject ex:Eiffel_tower.
 }
  ```
  
@@ -136,7 +124,7 @@ WHERE {
   SELECT DISTINCT ?pic ?when
   WHERE {
     ?pic a ex:Picture;
-             ex:when ?when.
+             ex:Date ?when.
     FILTER (?when > "2019-12-24T00:00:00"^^xsd:dateTime)
     FILTER (?when < "2019-12-31T23:59:59"^^xsd:dateTime)
   }
@@ -144,22 +132,20 @@ WHERE {
   
 * Selfie(s)
   ```sql
-  SELECT DISTINCT ?pic (count( ?p) as ?count)
+  SELECT DISTINCT ?pic 
   WHERE {
     ?pic a ex:Picture;
-             ex:subject ?p.
+             ex:Subject ?p;
+	     ex:Author ?p.
   }
-  GROUP BY ?pic
-  HAVING (?count = 1)
   ```
   
-* Photos d'un type d'animal : cow
+* Photos d'un type d'animal : deer
 ```sql
 SELECT DISTINCT ?pic
 WHERE {
    ?pic a ex:Picture;
-    ex:Animal ?a.
-     ?a a ex:cow.
+    ex:Subject ex:deer.
 }
   ```
   
@@ -173,18 +159,6 @@ SELECT ?pic
  }
    ```
    
- * Photos de crémaillère décrivant Yann
- ```sql
- SELECT ?pic
- WHERE {
-    ?pic a ex:Picture;
-		ex:Events ex:House-warming_party;
-  		ex:Subject ex:Yann.
- }
-  ```
-  
- * Photos 
 
 
-  
   
