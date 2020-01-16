@@ -17,8 +17,8 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
    ```
 
 * Photos de plusieurs personnes : Yann et Maxence
-   ```sql
-  SELECT DISTINCT ?pic
+ ```sql
+ SELECT DISTINCT ?pic
   WHERE {
    ?pic a ex:Picture;
        ex:Subject ex:Yann;
@@ -28,7 +28,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 
 * Photos où il y a des personnes identifiées dessus   
  ```sql
-  SELECT DISTINCT ?pic
+SELECT DISTINCT ?pic
   WHERE {
     ?pic a ex:Picture;
              ex:Subject ?p.
@@ -49,7 +49,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 
 * Photos de pot de départ 
  ```sql
- SELECT ?picture
+SELECT ?picture
  WHERE {
    ?picture a ex:Picture;
        ex:Events ex:Farewell_party.
@@ -58,7 +58,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 
 * Photos de crémaillère
  ```sql
-  SELECT DISTINCT ?picture 
+SELECT DISTINCT ?picture 
   WHERE {
     ?picture a ex:Picture;
         ex:Events ex:House-warming_party.
@@ -77,7 +77,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 
 * Photos d'un évènement : Voyage à Londres
  ```sql
-  SELECT DISTINCT ?picture ?event
+ SELECT DISTINCT ?picture ?event
   WHERE {
     ?picture a ex:Picture;
         ex:Events ex:Trip_to_London.
@@ -86,14 +86,14 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
 
 * Photos d'un festival : Festival de Cannes
  ```sql
-  SELECT DISTINCT ?picture
+ SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
          ex:Events ex:Cannes_festival.
   }
  ```
 * Photos d'un salon: salon de l'auto
-   ```sql
+ ```sql
   SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
@@ -120,7 +120,7 @@ WHERE {
  ```
  
 * Photos prises durant une certaine période de temps : toutes celles prises entre le 24 et le 31 décembre 2019
-   ```sql
+ ```sql
   SELECT DISTINCT ?pic ?when
   WHERE {
     ?pic a ex:Picture;
@@ -131,7 +131,7 @@ WHERE {
   ```
   
 * Selfie(s)
-  ```sql
+ ```sql
   SELECT DISTINCT ?pic 
   WHERE {
     ?pic a ex:Picture;
