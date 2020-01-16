@@ -160,6 +160,15 @@ WHERE {
   GROUP BY ?pic
   HAVING (?count = 1)
   ```
+* Photos d'un type d'animal : cow
+```sql
+SELECT DISTINCT ?pic
+WHERE {
+   ?pic a ex:Picture;
+    ex:Animal ?a.
+     ?a a ex:cow.
+}
+  ```
 
 
 
