@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h5="http://xmlns.jcp.org/jsf/passthrough">
+<h:outputStylesheet library="css" name="style.css"  />
+    <h:head>
+        <title>Recherche de Photo</title>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="userId" value="#{recherche.userId}" />
+        </f:metadata>
+        <h:form>
+                <label for="who">Qui :</label>
+                <br/>
+                <h:inputText id="who" h5:placeholder="Qui" value="#{recherche.who}"/>
+                <br/>
+                
+                <label for="what">Quoi :</label>
+                <br/>
+                <h:inputText id="what" h5:placeholder="Quoi" value="#{recherche.what}"/>
+                <br/>
+                
+                <label for="where">Où :</label>
+                <br/>
+                <h:inputText id="where" h5:placeholder="où" value="#{recherche.where}"/>
+                <br/>
+                
+                <label for="when">Quand :</label>
+                <br/>
+                <h:inputText id="when" h5:placeholder="Quand"/>
+                <br/>
+                <label for="takenBy">Prise par :</label>
+                <br/>
+                <h:inputText id="takenBy" h5:placeholder="Prise Par" value="#{recherche.takenBy}"/>
+                <br/>
+                <h:commandButton class="btn" value="Rechercher" action="#{recherche.search()}"/>
+            <!-- </h:panelGrid> -->
+            <h:messages globalOnly="true"/>
+        </h:form>
+    </h:body>
+</html>
+
