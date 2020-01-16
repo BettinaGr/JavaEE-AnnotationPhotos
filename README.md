@@ -99,7 +99,7 @@ WHERE {
  ```
 
 * Photos d'un festival : Festival de Cannes
-   ```sql
+ ```sql
   SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
@@ -107,9 +107,7 @@ WHERE {
     ?event a ex:Cannes_festival.
   }
  ```
-
-* Photos d'un salon : Salon de l'auto
-
+* Photos d'un salon: salon de l'auto
    ```sql
   SELECT DISTINCT ?picture
   WHERE {
