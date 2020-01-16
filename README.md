@@ -130,6 +130,17 @@ WHERE {
     ex:Monument ?m.
      ?m a ex:Eiffel_tower.
 }
+* Photos prises durant une certaine période de temps : toutes celles prises entre le 24 et le 31 décembre 2019
+  
+  SELECT DISTINCT ?pic ?when
+  WHERE {
+    ?pic a ex:Picture;
+             ex:when ?when.
+    FILTER (?when > "2019-12-24T00:00:00"^^xsd:dateTime)
+    FILTER (?when < "2019-12-31T23:59:59"^^xsd:dateTime)
+  }
+
+
 
 
   
