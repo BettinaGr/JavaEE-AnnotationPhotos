@@ -44,17 +44,6 @@ Requêtes SPARQL possibles avec notre ontologie
   }
    ```
 
-* Photos des personnes qui sont amis  => ???????????
- ```sql
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT DISTINCT ?pic
-WHERE {
-  ?pic a ex:Picture;
-      ex:subject ?People;
-      ex:subject ?People.
-}
- ```
-
 * Photos de pot de départ 
  ```sql
   SELECT DISTINCT ?picture ?event
