@@ -75,29 +75,23 @@ SELECT DISTINCT ?picture
  }
   ```
 
-* Photos d'un évènement : Voyage à Londres
+* Photos de vacances :
  ```sql
  SELECT DISTINCT ?picture ?event
   WHERE {
     ?picture a ex:Picture;
-        ex:Events ex:Trip_to_London.
+        ex:Events ?e.
+	?e a ex:Holidays.
   }
  ```
 
-* Photos d'un festival : Festival de Cannes
- ```sql
- SELECT DISTINCT ?picture
-  WHERE {
-    ?picture a ex:Picture;
-         ex:Events ex:Cannes_festival.
-  }
- ```
-* Photos d'un salon: salon de l'auto
+* Photos d'un show :
  ```sql
   SELECT DISTINCT ?picture
   WHERE {
     ?picture a ex:Picture;
-         ex:Events ex:Motor_show.
+         ex:Events ?e.
+    ?e a ex:Show.
   }
    ```
   
@@ -140,12 +134,13 @@ WHERE {
   }
   ```
   
-* Photos d'un type d'animal : deer
+* Photos d'un type d'animal : dog
 ```sql
 SELECT DISTINCT ?pic
 WHERE {
    ?pic a ex:Picture;
-    ex:Subject ex:deer.
+    ex:Subject ?s.
+    ?s a ex:dog.
 }
   ```
   
