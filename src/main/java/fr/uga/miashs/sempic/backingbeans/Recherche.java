@@ -5,8 +5,6 @@
  */
 package fr.uga.miashs.sempic.backingbeans;
 
-import fr.uga.miashs.sempic.SempicException;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,12 +13,7 @@ import javax.faces.view.ViewScoped;
 import org.apache.jena.rdf.model.Resource;
 import fr.uga.miashs.sempic.rdf.Namespaces;
 import fr.uga.miashs.sempic.rdf.SempicRDFStore;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-/**
- *
- * @author Orlane
- */
+
 @Named
 @ViewScoped
 public class Recherche implements Serializable{

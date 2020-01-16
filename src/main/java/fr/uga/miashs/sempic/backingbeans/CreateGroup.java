@@ -5,7 +5,6 @@
  */
 package fr.uga.miashs.sempic.backingbeans;
 
-import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.dao.GroupFacade;
 import fr.uga.miashs.sempic.SempicModelException;
 import fr.uga.miashs.sempic.dao.SempicUserFacade;
@@ -13,18 +12,12 @@ import fr.uga.miashs.sempic.entities.SempicGroup;
 import fr.uga.miashs.sempic.entities.SempicUser;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 /**
  *
@@ -52,8 +45,8 @@ public class CreateGroup implements Serializable {
         current=new SempicGroup();
     }
     
+    // Accesseurs (get/set)
     public void setOwnerId(String id) {
-        System.out.println(id); 
         current.setOwner(userDao.read(Long.valueOf(id)));
     }
     
@@ -62,7 +55,6 @@ public class CreateGroup implements Serializable {
             return "-1";
         return ""+current.getOwner().getId();
     }
-
     
     public List<SempicUser> getUsers() {
         return userDao.findAll();
@@ -76,9 +68,13 @@ public class CreateGroup implements Serializable {
         this.current = current;
     }
     
+    /**
+     * Création d'un groupe
+     *
+     * 
+     * @return "failure" si ajout est un échec, "success" sinon
+     */
     public String create() {
-        System.out.println(current);
-        
         try {
             groupDao.create(current);
         } catch (SempicModelException ex) {

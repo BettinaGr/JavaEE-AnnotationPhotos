@@ -71,7 +71,7 @@ public class SempicUser implements Serializable {
     // Mot de passe 
     @Transient
     private transient String password;
-    
+       
     // Déclaration d'une relation OneToMany entre SempicUser et SempicGroup
     // Un utilisateur peut être propriétaire de plusieurs groupes
     // Plusieurs groupes peuvent être la propriété d'un utilisateur
@@ -138,7 +138,7 @@ public class SempicUser implements Serializable {
     public String getPassword() {
         return password;
     }
-    
+
     public Set<SempicGroup> getGroups() {
         if (groups==null) return Collections.emptySet();
         return Collections.unmodifiableSet(groups);

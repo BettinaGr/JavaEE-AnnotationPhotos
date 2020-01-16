@@ -19,10 +19,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- *
- * @author Bettina
- */
 @Named
 @ViewScoped
 public class CreateAlbum implements Serializable{
@@ -45,6 +41,7 @@ public class CreateAlbum implements Serializable{
         current=new SempicAlbum();
     }
     
+    // Accesseurs (get/set)
     public void setOwnerId(String id) {
         System.out.println(id); 
         current.setOwner(userDao.read(Long.valueOf(id)));
@@ -68,8 +65,13 @@ public class CreateAlbum implements Serializable{
         this.current = current;
     }
     
+      /**
+     * Création d'un album 
+     *
+     * 
+     * @return "failure" si ajout est un échec, "success" sinon
+     */
     public String create() {
-        System.out.println(current);
         try {
             albumDao.create(current);
         } catch (SempicModelException ex) {

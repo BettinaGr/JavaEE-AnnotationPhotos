@@ -5,12 +5,10 @@
  */
 package fr.uga.miashs.sempic.entities;
 
-import fr.uga.miashs.restservice.PhotoStore;
 import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.dao.PhotoStorage;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -23,13 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author Bettina
- */
 @Entity
 @Table
 @NamedQueries({

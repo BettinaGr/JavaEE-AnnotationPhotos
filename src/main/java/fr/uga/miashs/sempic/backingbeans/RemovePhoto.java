@@ -8,8 +8,7 @@ package fr.uga.miashs.sempic.backingbeans;
 import fr.uga.miashs.sempic.SempicException;
 import fr.uga.miashs.sempic.dao.PhotoFacade;
 import fr.uga.miashs.sempic.dao.PhotoStorage;
-import fr.uga.miashs.sempic.entities.SempicPhoto;
-import fr.uga.miashs.sempic.rdf.BasicSempicRDFStore;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -18,10 +17,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- *
- * @author Bettina
- */
 @Named
 @RequestScoped
 public class RemovePhoto {
@@ -31,28 +26,15 @@ public class RemovePhoto {
     @Inject
     private PhotoStorage photoStorage;
     
-    /*@Inject
-    private SempicPhoto current;*/
-    
     private String id;
     private Long id2;
     private String picPath;
-    private String thPath;
     
     @PostConstruct
     public void init() {
-        //current=new SempicPhoto();
     }
     
-    /*public SempicPhoto getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(SempicPhoto current) {
-        this.current = current;
-        //Logger.getLogger(UploadPhoto.class.getName()).log(Level.INFO, null, this.current);
-    }*/
-    
+    // Accesseurs (get/set)
     public String getId() {
         return id;
     }
@@ -69,30 +51,49 @@ public class RemovePhoto {
       this.picPath = picPath;
     }
     
-
-    public void remove() throws SempicException {
+    // Supprime une photo
+    public void remove() throws SempicException, IOException {
         FacesContext fc = FacesContext.getCurrentInstance();
         
         this.id = getIdParam(fc);
         this.id2 = Long.parseLong(this.id);
-        photoDao.remove(this.id2);
-       
+        // On supprime la photo de la base de données
+        photoDao.remove(this.id2, this.getAlbumId(fc));
+        // On supprime la photo des dossiers files et thumbnails 
         photoStorage.deletePicture(Paths.get(getPicPathParam(fc)));
-        
-        /*BasicSempicRDFStore s = new BasicSempicRDFStore();
-        s.deletePhoto(this.id2);*/
     }
     
-    //get value from "f:param"
+    /**
+     * Récupère la valeur du paramètre photoId
+     *
+     * @param fc = objet qui contient les paramètres de la page
+     * @return l'identifiant correspondant à la photo à supprimer
+     * 
+     */
     public String getIdParam(FacesContext fc){
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("photoId");
     }  
+    
+    /**
+     * Récupère la valeur du paramètre photoPath
+     *
+     * @param fc = objet qui contient les paramètres de la page
+     * @return le path correspondant à la photo à supprimer
+     * 
+     */
     public String getPicPathParam(FacesContext fc){
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("photoPath");
     }  
-
+    
+    /**
+     * Récupère la valeur du paramètre albumId
+     *
+     * @param fc = objet qui contient les paramètres de la page
+     * @return l'id de l'album qui contient la photo à supprimer
+     * 
+     */
     public String getAlbumId(FacesContext fc){
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("albumId");

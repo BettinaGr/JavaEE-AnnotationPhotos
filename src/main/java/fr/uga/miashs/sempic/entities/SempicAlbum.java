@@ -6,27 +6,16 @@
 package fr.uga.miashs.sempic.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author Bettina
- */
 @Entity
 @Table
 @NamedQueries({
@@ -41,7 +30,11 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
         name = "query.SempicAlbum.removeByOwner",
         query = "DELETE FROM SempicAlbum a WHERE a.owner =: owner"
-    ),    
+    ),
+    @NamedQuery(
+        name = "query.SempicAlbum.selectByOwner",
+        query = "SELECT a FROM SempicAlbum a WHERE a.owner =: owner"
+    ),     
     @NamedQuery(
         name = "query.SempicAlbum.findAlbumById",
         query = "SELECT a FROM SempicAlbum a WHERE a.id =: id"

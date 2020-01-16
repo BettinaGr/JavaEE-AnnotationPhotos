@@ -6,20 +6,13 @@
 package fr.uga.miashs.sempic.backingbeans;
 
 import fr.uga.miashs.sempic.dao.AlbumFacade;
-import java.awt.Dimension;
+import java.io.IOException;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
 
-/**
- *
- * @author Bettina
- */
 @Named
 @RequestScoped
 public class RemoveAlbum {
@@ -30,6 +23,7 @@ public class RemoveAlbum {
     private String id;
     private Long id2;
   
+     // Accesseurs (get/set)
     public String getId() {
         return id;
     }
@@ -38,19 +32,34 @@ public class RemoveAlbum {
         this.id = id;
     }
 
-    public void remove(){
+     // Supprime un album
+    public void remove() throws IOException{
         FacesContext fc = FacesContext.getCurrentInstance();
         this.id = getIdParam(fc);
         this.id2 = Long.parseLong(this.id);
-        albumDao.remove(this.id2); 
+        albumDao.remove(this.id2, this.getOwnerId(fc)); 
 
     }
-     //get value from "f:param"
+    
+    /**
+     * Récupère la valeur du paramètre albumId
+     *
+     * @param fc = objet qui contient les paramètres de la page
+     * @return l'identifiant correspondant à l'album à supprimer
+     * 
+     */
     public String getIdParam(FacesContext fc){
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("albumId");
     }  
     
+    /**
+     * Récupère la valeur du paramètre ownerId
+     *
+     * @param fc = objet qui contient les paramètres de la page
+     * @return l'identifiant correspondant au propriétaire de l'album à supprimer
+     * 
+     */
     public String getOwnerId(FacesContext fc){
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         return params.get("ownerId");

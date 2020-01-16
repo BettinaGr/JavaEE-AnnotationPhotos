@@ -6,16 +6,13 @@
 package fr.uga.miashs.sempic.backingbeans;
 
 import fr.uga.miashs.sempic.dao.SempicUserFacade;
+import java.io.IOException;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- *
- * @author Bettina
- */
 @Named
 @RequestScoped
 public class RemoveUser {
@@ -25,23 +22,31 @@ public class RemoveUser {
     private String id;
     private Long id2;
   
+    // Accesseurs
     public String getId() {
-    return id;
-  }
+        return id;
+    }
 
     public void setId(String id) {
       this.id = id;
     }
 
-    public void remove(){
-
+    // Supprime un utilisateur
+    public void remove() throws IOException{
         FacesContext fc = FacesContext.getCurrentInstance();
         this.id = getIdParam(fc);
         this.id2 = Long.parseLong(this.id);
         userDao.remove(this.id2);
         
     }
-     //get value from "f:param"
+    
+    /**
+     * Récupère la valeur du paramètre userId pour que l'on puisse supprimer l'utilisateur de la base de données
+     *
+     * @param fc = objet qui contient les paramètres de la page
+     * @return l'identifiant correspondant à l'utilisateur à supprimer
+     * 
+     */
     public String getIdParam(FacesContext fc){
 
       Map<String,String> params = fc.getExternalContext().getRequestParameterMap();

@@ -5,23 +5,13 @@
  */
 package fr.uga.miashs.sempic.backingbeans;
 
-import fr.uga.miashs.sempic.rdf.BasicSempicRDFStore;
 import fr.uga.miashs.sempic.dao.AlbumFacade;
 import fr.uga.miashs.sempic.dao.PhotoFacade;
 import fr.uga.miashs.sempic.dao.PhotoStorage;
 import fr.uga.miashs.sempic.entities.SempicPhoto;
-import static fr.uga.miashs.sempic.rdf.ExampleRDFConnection.ENDPOINT_GSP;
-import static fr.uga.miashs.sempic.rdf.ExampleRDFConnection.ENDPOINT_QUERY;
-import static fr.uga.miashs.sempic.rdf.ExampleRDFConnection.ENDPOINT_UPDATE;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
@@ -30,17 +20,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
 import javax.xml.bind.DatatypeConverter;
-import jdk.internal.net.http.common.Utils;
-import org.apache.jena.rdfconnection.RDFConnection;
-import org.apache.jena.rdfconnection.RDFConnectionFactory;
+
 /**
  *
  * @author Bettina
@@ -62,35 +47,32 @@ public class UploadPhoto implements Serializable{
     @Inject
     private PhotoFacade photoDao;
     
-    
-    
+    // Contient la liset des types des fichiers photos    
     private static final Map <String, String> mimeTypes; 
-     
-    
     
     static {
         Map <String, String> aMap = new HashMap <String, String>();
         aMap.put("image/png", "png");
+        aMap.put("image/jpeg", "jpg");
         aMap.put("image/jpeg", "jpeg");
         mimeTypes = Collections.unmodifiableMap(aMap);
     }
     
+    // Constructeur
     public UploadPhoto(){
          try {
             photoStorage = new PhotoStorage();
-            System.out.println(photoStorage);
         } catch (IOException ex) {
             Logger.getLogger(UploadPhoto.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-     
  
     @PostConstruct
     public void init() {
         current=new SempicPhoto();
     }
     
+    // Définition des accesseurs (get/set) des propriétés
     public SempicPhoto getCurrent() {
         return current;
     }
@@ -107,7 +89,6 @@ public class UploadPhoto implements Serializable{
     
     public void setPhoto(Part p){
         this.photo = p;
-        System.out.println("apres " +this.photo);
     }
     
     public String getAlbumId() {
@@ -116,43 +97,53 @@ public class UploadPhoto implements Serializable{
         return ""+current.getAlbum().getId();
     }
     
-    public void setAlbumId(String id) {
-        System.out.println("set id list " + id); 
+    public void setAlbumId(String id) { 
         current.setAlbum(albumDao.read(Long.valueOf(id)));
     }
     
+    /**
+     * Vérification du type du fichier envoyé par le client et 
+     * sauvegarde de la photo dans le path PICTURESTORE ainsi que dans la base de données.
+     *
+     * 
+     * @return "failure" si ajout est un échec, "success" sinon
+     * @throws java.lang.Exception
+     */
     public String save() throws Exception {
         try  {
             InputStream input = photo.getInputStream();
-            System.out.println("input" + input);
             String mime = photo.getContentType();
             
             if (mimeTypes.containsKey(mime)){
                 
                 String fileName = createSha1(input) + "." + mimeTypes.get(mime);
-                input = photo.getInputStream(); // mark(0) doesnt work, so we initialize again
-            //  String fileName = "test.jpeg";
+                input = photo.getInputStream(); 
                 photoStorage.savePicture(PhotoStorage.PICTURESTORE.resolve(fileName),input);
                 SempicPhoto p = new SempicPhoto();
                 p.setName(fileName);
                 p.setAlbum(albumDao.findAlbumById(Long.parseLong(getAlbumId())));
-                System.out.println("ffffccc" + p);
-                System.out.println("creation en cours");
-                photoDao.create(p);
-                                
-            } 
-            
+                photoDao.create(p);                      
+            }   
         }
         catch (IOException e) {
             return "failure";
         }
         return "success";
     }
-     private String createSha1(InputStream fis) throws IOException, NoSuchAlgorithmException  {
+    
+    // tiré de : https://github.com/kwijik/PhotoMania
+    /**
+     * Permet de créer le nom de la photo
+     * 
+     * @param fis = InputStream à convertir en nom
+     * @return l'InputStream fis convertit en String
+     * 
+     */
+    private String createSha1(InputStream fis) throws IOException, NoSuchAlgorithmException  {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-1");
-             int n = 0;
+            int n = 0;
             byte[] buffer = new byte[8192];
             while (n != -1) {
                 n = fis.read(buffer);
