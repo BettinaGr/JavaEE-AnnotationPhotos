@@ -1,7 +1,7 @@
 # JavaEE-AnnotationPhotos
 # DURAND Virginie, GRIMARD Bettina & PITARCH Orlane
 
-Requêtes SPARQL possibles avec notre ontologie
+Requêtes SPARQL possibles avec notre ontologie, utiliser : PREFIX ex:<http://www.semanticweb.org/ontologies/WebSemProject#>
 
 ---
 
