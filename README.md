@@ -106,10 +106,10 @@ WHERE {
              ex:event ?event.
     ?event a ex:Cannes_festival.
   }
- 
  ```
 
 * Photos d'un salon : Salon de l'auto
+
    ```sql
   SELECT DISTINCT ?picture
   WHERE {
