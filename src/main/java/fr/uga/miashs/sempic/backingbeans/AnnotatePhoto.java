@@ -74,11 +74,11 @@ public class AnnotatePhoto implements Serializable {
         
         System.out.println("objt = "+ Namespaces.photoNS+"#"+objet);
         System.out.println("prop = "+ Namespaces.photoNS+"#"+propriete);
-        System.out.println(photoDao.findPhotoById(getPhotoId()));
-        System.out.println(photoDao.findPhotoById(getPhotoId()).getAlbum());
-        System.out.println(photoDao.findPhotoById(getPhotoId()).getAlbum().getId());
-//        Resource photo = rdf.createPhoto(Long.parseLong(getPhotoId()), photoDao.findPhotoById(getPhotoId()).getAlbum().getId(), photoDao.findPhotoById(getPhotoId()).getAlbum().getOwner().getId());
-//        rdf.addAnnotation(photo, Namespaces.photoNS+"#"+getPropriete(), Namespaces.photoNS+"#"+getObjet());
+      
+
+        Resource photo = rdf.createPhoto(Long.parseLong(getPhotoId()), photoDao.findPhotoById(getPhotoId()).getAlbum().getId(), photoDao.findPhotoById(getPhotoId()).getAlbum().getOwner().getId());
+        System.out.println("TYGHGBHB  " + photo);
+        rdf.addAnnotation(photo, Namespaces.photoNS+"#"+getPropriete(), Namespaces.photoNS+"#"+getObjet());
         
     }
 }

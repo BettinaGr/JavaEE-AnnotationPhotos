@@ -101,7 +101,7 @@ public class SempicPhoto implements Serializable{
         Path pic = Paths.get(name);
         try {
             PhotoStorage ps = new PhotoStorage();   
-            System.out.println("coucou ghjbvghnbv" + pic);
+            System.out.println("coucou ghjbvghnbv " + pic);
             ps.getThumbnailPath(pic, 120);
             return PhotoStorage.buildAndVerify(PhotoStorage.THUMBNAILSWEB.resolve(String.valueOf(120)), pic).toString();
         
