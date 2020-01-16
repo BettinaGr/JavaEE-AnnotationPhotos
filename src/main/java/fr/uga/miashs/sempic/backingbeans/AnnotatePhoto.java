@@ -21,6 +21,7 @@ import org.apache.jena.rdfconnection.*;
 import fr.uga.miashs.sempic.rdf.SempicRDFStore;
 import javax.enterprise.context.RequestScoped;
 import fr.uga.miashs.sempic.rdf.Namespaces;
+import javax.faces.model.DataModel;
 
 /**
  *
@@ -38,6 +39,7 @@ public class AnnotatePhoto implements Serializable {
     private String propriete;
     
     private SempicRDFStore rdf = new SempicRDFStore();
+    
     
     @Inject
     private PhotoFacade photoDao;
@@ -71,14 +73,23 @@ public class AnnotatePhoto implements Serializable {
         this.propriete = propriete;
     }
     public void addAnnotation(){
-        
+        Resource photo = rdf.createPhoto(Long.parseLong(getPhotoId()), photoDao.findPhotoById(getPhotoId()).getAlbum().getId(), photoDao.findPhotoById(getPhotoId()).getAlbum().getOwner().getId());
+        if (propriete.endsWith("Type")) {
+            String prop = propriete.substring(0, propriete.length()-4);
+            rdf.addAnnotationByType(photo, Namespaces.photoNS+"#"+prop, Namespaces.photoNS+"#"+objet);
+            
+        } else {
+            rdf.addAnnotation(photo, Namespaces.photoNS+"#"+getPropriete(), Namespaces.photoNS+"#"+getObjet());
+        }
         System.out.println("objt = "+ Namespaces.photoNS+"#"+objet);
         System.out.println("prop = "+ Namespaces.photoNS+"#"+propriete);
-      
-
-        Resource photo = rdf.createPhoto(Long.parseLong(getPhotoId()), photoDao.findPhotoById(getPhotoId()).getAlbum().getId(), photoDao.findPhotoById(getPhotoId()).getAlbum().getOwner().getId());
+//        DisplayAnnotation();
         System.out.println("TYGHGBHB  " + photo);
-        rdf.addAnnotation(photo, Namespaces.photoNS+"#"+getPropriete(), Namespaces.photoNS+"#"+getObjet());
         
+    }
+    
+    public void DisplayAnnotation() {
+        System.out.println("gggggggg    "+rdf.readPhoto(Long.parseLong(getPhotoId())));
+        System.out.println("jjjjj "+rdf.readPhoto(Long.parseLong(getPhotoId())).split("#"));
     }
 }

@@ -18,24 +18,28 @@ and open the template in the editor.
             <f:viewParam name="userId" value="#{recherche.userId}" />
         </f:metadata>
         <h:form>
-                <label for="who">Qui :</label>
+                <label for="whoWhat">Qui ou Quoi :</label>
                 <br/>
-                <h:inputText id="who" h5:placeholder="Qui" value="#{recherche.who}"/>
+                <h:inputText id="whoWhat" h5:placeholder="Qui/Quoi" value="#{recherche.whoWhat}"/>
                 <br/>
-                
-                <label for="what">Quoi :</label>
                 <br/>
-                <h:inputText id="what" h5:placeholder="Quoi" value="#{recherche.what}"/>
+                <h:inputText id="whoWhatType" h5:placeholder="Type Quoi/Qui" value="#{recherche.whoWhatType}"/>
                 <br/>
                 
                 <label for="where">Où :</label>
                 <br/>
                 <h:inputText id="where" h5:placeholder="où" value="#{recherche.where}"/>
                 <br/>
+                <br/>
+                <h:inputText id="whereType" h5:placeholder="où Type" value="#{recherche.whereType}"/>
+                <br/>
                 
                 <label for="when">Quand :</label>
                 <br/>
-                <h:inputText id="when" h5:placeholder="Quand"/>
+                <h:inputText id="when" h5:placeholder="Quand" value="#{recherche.when}"/>
+                <br/>
+                <br/>
+                <h:inputText id="whenType" h5:placeholder="Quand Type" value="#{recherche.whenType}"/>
                 <br/>
                 <label for="takenBy">Prise par :</label>
                 <br/>

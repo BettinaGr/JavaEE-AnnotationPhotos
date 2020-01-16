@@ -32,11 +32,11 @@ import org.apache.jena.rdf.model.ModelFactory;
 public class Recherche implements Serializable{
     private String userId;
     
-    private String who;
+    private String whoWhat;
     
     private String where;
     
-    private String what;
+    private String when;
     
     private String takenBy;
     
@@ -45,6 +45,12 @@ public class Recherche implements Serializable{
     private SempicRDFStore rdf = new SempicRDFStore();
     
     private List<Long> resultSearch = new ArrayList<>();
+    
+    private String whoWhatType;
+    
+    private String whereType;
+    
+    private String whenType;
     
     private DataModel<SempicPhoto> dataModel;
 
@@ -61,20 +67,22 @@ public class Recherche implements Serializable{
         return this.userId;
     }
     
-    public void setWho(String who) { 
-        this.who = who;
+    public void setWhoWhat(String whoWhat) { 
+        this.whoWhat = whoWhat;
     }
      
-    public String getWho() {
-        return this.who;
+    public String getWhoWhat() {
+        return this.whoWhat;
     }
-    public void setWhat(String what) {
-        this.what = what;
+    
+    public void setWhoWhatType(String whoWhatType) { 
+        this.whoWhatType = whoWhatType;
     }
      
-    public String getWhat() {
-        return this.what;
+    public String getWhoWhatType() {
+        return this.whoWhatType;
     }
+   
     
     public void setWhere(String where) {
         this.where = where;
@@ -84,6 +92,30 @@ public class Recherche implements Serializable{
         return this.where;
     }
      
+    public void setWhereType(String whereType) {
+        this.whereType = whereType;
+    }
+    
+    public String getWhereType() {
+        return this.whereType;
+    }
+    
+    public void setWhenType(String whenType) {
+        this.whenType = whenType;
+    }
+    
+    public String getWhenType() {
+        return this.whenType;
+    }
+    
+    public void setWhen(String when) {
+        this.when = when;
+    }
+    
+    public String getWhen() {
+        return this.when;
+    }
+    
     public void setTakenBy(String takenBy) {
         this.takenBy = takenBy;
     }
@@ -100,25 +132,18 @@ public class Recherche implements Serializable{
     
     private List<String> getDepicts() {
         depicts = new ArrayList<String>();
-        if (what != null) {
-            String[] whatSplit = (what.split("\\s*(;\\s*)+"));
+        if (whoWhat != null) {
+            String[] whatSplit = (whoWhat.split("\\s*(;\\s*)+"));
             for (String split : whatSplit) {
                 if(!"".equals(split))
                     depicts.add(Namespaces.photoNS+"#"+split);
             }
         }     
-        if (who != null) {
-            String[] whoSplit = (who.split("\\s*(;\\s*)+"));
-            for (String split : whoSplit) {
-                if(!"".equals(split))
-                    depicts.add(Namespaces.photoNS+"#"+split);
-            }
-        }  
         return depicts;
     }
     
     public void search() { 
-        List<Resource> Resultat = rdf.searchPhotos(getDepicts(), getResource(takenBy), getResource(where), -1);
+        List<Resource> Resultat = rdf.searchPhotos(getDepicts(), getResource(takenBy), getResource(where), getResource(when), getResource(whenType), getResource(whereType), getResource(whoWhatType), Long.parseLong(userId));
         resultSearch = new ArrayList<>();
         for (Resource res : Resultat ) {
             String id[] = res.getURI().split("/");
@@ -128,7 +153,7 @@ public class Recherche implements Serializable{
     }
     
     public DataModel<SempicPhoto> getDataModel() {
-        if (dataModel == null && !resultSearch.isEmpty()) {
+        if (!resultSearch.isEmpty()) {
             System.out.println("dataPhoto " + photoDao.findPhotosByListId(resultSearch));
             dataModel = new ListDataModel<>(photoDao.findPhotosByListId(resultSearch));
         } else if (resultSearch.isEmpty()) {
