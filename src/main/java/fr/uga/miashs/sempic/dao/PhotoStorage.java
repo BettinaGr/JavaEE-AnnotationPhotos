@@ -32,11 +32,20 @@ import javax.servlet.ServletContext;
 public class PhotoStorage {
     private static Logger logger = Logger.getLogger(PhotoStorage.class.getName());
 
+    /**
+     * Définition des chemins absolus ou relatifs (pour ThumbnailsWeb) permettant l'accès aux photos insérées via notre site web.
+     * 
+     */
     public static final Path PICTURESTORE = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/files");
     public static final Path THUMBNAILS = Paths.get("C:/Users/Orlane/Documents/NetBeansProjects/Test/src/main/webapp/resources/thumbnails");
     public static final Path THUMBNAILSWEB =  Paths.get("/SempicJPA/faces/javax.faces.resource/thumbnails");
     
+    
 
+    /**
+     * Constructeur permettant de créer les dossiers pour contenir les photos s'il n'existe pas.
+     * 
+     */
     public PhotoStorage() throws IOException {
         if (Files.notExists(PICTURESTORE)) {
             Files.createDirectories(PICTURESTORE);
@@ -45,22 +54,7 @@ public class PhotoStorage {
             Files.createDirectories(THUMBNAILS);
         }
     }
-
-//    public PhotoStorage(Path pictureStore, Path thumbnailStore) throws IOException {
-//        this.pictureStore = pictureStore;
-//        this.thumbnailStore = thumbnailStore;
-//        if (Files.notExists(pictureStore)) {
-//            Files.createDirectories(pictureStore);
-//        }
-//        if (Files.notExists(thumbnailStore)) {
-//            Files.createDirectories(thumbnailStore);
-//        }
-//    }
-
-//    @Inject
-//    public PhotoStorage(ServletContext context) throws IOException {
-//        this(Paths.get(context.getInitParameter("PhotoStorePath")), Paths.get(context.getInitParameter("ThumbnailStorePath")));
-//    }
+    
 
     // Normalize the path and check that we do not go before pictureStore
     // for security reasons
@@ -75,6 +69,11 @@ public class PhotoStorage {
         return res;
     }
 
+    /**
+     * Sauvegarde la photo à l'uplod de celle-ci sur le site (i.e. copie la photo dans l'endroit de stockage des photos
+     * PICTURESTORE).
+     * 
+     */
     public void savePicture(Path p, InputStream data) throws SempicException {
         Path loc = buildAndVerify(PICTURESTORE, p);
         try {
@@ -85,6 +84,11 @@ public class PhotoStorage {
         }
     }
 
+    /**
+     * Supprime une photo dans les fichiers (copie de la photo et Thumbnails créé) si l'utilisateur souhaite supprimer sa photo
+     * de notre site.
+     * 
+     */
     public void deletePicture(Path picPath) throws SempicException {
         Path loc = buildAndVerify(PICTURESTORE, picPath);
 
@@ -111,6 +115,10 @@ public class PhotoStorage {
         }
     }
     
+    /**
+     * Retourne le chemin de stockage de la copie de la photo dans nos dossiers.
+     * 
+     */
     public Path getPicturePath(Path p) throws SempicException {
         Path picPath = buildAndVerify(PICTURESTORE, p);
         if (Files.notExists(picPath)) {
@@ -119,6 +127,11 @@ public class PhotoStorage {
         return picPath;
     }
 
+    /**
+     * Retourne le chemin de stockage du Thumbnails de la photo dans nos dossiers.
+     * Si le Thumbnails de la photo n'existe pas, on le crée à partir de la copie de la photo présente dans PICTURESTORE.
+     * 
+     */
     public Path getThumbnailPath(Path p, int width) throws SempicException, IOException {
         Path thumbnailPath = buildAndVerify(THUMBNAILS.resolve(String.valueOf(width)), p);
         
@@ -149,23 +162,5 @@ public class PhotoStorage {
         }
         return thumbnailPath;
     }
-    
-//    public Path getPictureStore(){
-//        return this.pictureStore;
-//    }
-//    
-//    public Path getThumbnailStore(){
-//        return this.thumbnailStore;
-//    }
-
-//    public void emptyCache() throws IOException {
-////        Files.walk(thumbnailStore).filter(p -> Files.isRegularFile(p)).forEach(p -> {
-////            try {
-////                Files.delete(p);
-////            } catch (IOException ex) {
-////                Logger.getLogger(PhotoStorage.class.getName()).log(Level.SEVERE, null, ex);
-////            }
-////        });
-//    }
 
 }
