@@ -91,15 +91,16 @@ public class SempicPhoto implements Serializable{
         this.album = album;
     }
     
+    //Permet d'obtenir le chemin absolu de la copie de la photo créé à l'upload d'une photo sur le sit Web :
     public String getPicturePath() {
         return PhotoStorage.PICTURESTORE.resolve(name).toString();
     }
    
+//    Permet d'avoir le chemin d'accès à la photo depuis la page internet, appelé dans le .xhtml pour afficher la photo :
     public String getThumbnailPathWeb() throws SempicException {
         Path pic = Paths.get(name);
         try {
             PhotoStorage ps = new PhotoStorage();   
-            System.out.println("coucou ghjbvghnbv " + pic);
             ps.getThumbnailPath(pic, 120);
             return PhotoStorage.buildAndVerify(PhotoStorage.THUMBNAILSWEB.resolve(String.valueOf(120)), pic).toString();
         
@@ -109,6 +110,7 @@ public class SempicPhoto implements Serializable{
         return "";
     }
     
+    //Permet d'obtenir le chemin absolu du Thumbnails créé à l'afichage de la liste de photo sur la page Web :
     public String getThumbnailPath() throws SempicException {
         Path pic = Paths.get(name);
         try {

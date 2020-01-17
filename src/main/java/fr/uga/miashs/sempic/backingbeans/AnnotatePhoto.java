@@ -28,6 +28,8 @@ import javax.faces.model.DataModel;
  * @author Bettina
  */
 
+// classe permettant d'annoter les photos :
+
 @Named
 @ViewScoped
 public class AnnotatePhoto implements Serializable {
@@ -40,10 +42,10 @@ public class AnnotatePhoto implements Serializable {
     
     private SempicRDFStore rdf = new SempicRDFStore();
     
-    
     @Inject
     private PhotoFacade photoDao;
     
+//  Définition des accesseurs (get/set) des propriétés
     public void setPhotoId(String id) {
         this.photoId = id;
         DisplayAnnotation();
@@ -73,6 +75,13 @@ public class AnnotatePhoto implements Serializable {
     public void setPropriete(String propriete) {
         this.propriete = propriete;
     }
+    
+    /**
+     * Ajoute une annotation dans Fuseki via Jena en créant la photo, si elle n'existe pas déjà dans l'ontologie 
+     * puis en ajoutant l'annotation via une fonction de l'EJB SempicRDF via "rdf" communiquant avec l'ontologie
+     * si la propriété concerne bien une chose possible dans notre ontologie (i.e. un individu ou un type défini).
+     * 
+     */
     public void addAnnotation(){
         Resource photo = rdf.createPhoto(Long.parseLong(getPhotoId()), photoDao.findPhotoById(getPhotoId()).getAlbum().getId(), photoDao.findPhotoById(getPhotoId()).getAlbum().getOwner().getId());
         if (propriete.endsWith("Type") && objet!=null) {
@@ -90,6 +99,12 @@ public class AnnotatePhoto implements Serializable {
         
     }
     
+    /**
+     * Affiche dans la console les annotations déjà existantes sur la photo via la fonction readPhoto présente dans SempicRDF.
+     * But a terme : afficher proprement ces annotation sur l'interface pour l'utilisateur 
+     * Afin de connaitre l'annotation et de pouvoir supprimer celle-ci.
+     * 
+     */
     public void DisplayAnnotation() {
         System.out.println("Annotations :    "+rdf.readPhoto(Long.parseLong(getPhotoId())));
     }
