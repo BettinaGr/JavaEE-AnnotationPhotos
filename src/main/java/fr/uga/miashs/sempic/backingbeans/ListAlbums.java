@@ -9,20 +9,11 @@ import fr.uga.miashs.sempic.dao.AlbumFacade;
 import fr.uga.miashs.sempic.dao.SempicUserFacade;
 import fr.uga.miashs.sempic.entities.SempicAlbum;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-/**
- *
- * @author Bettina
- */
 
 @Named
 @ViewScoped
@@ -38,16 +29,20 @@ public class ListAlbums implements Serializable {
     @Inject
     private SempicUserFacade userDao;
 
-    
+    /**
+     * Récupère l'ensemble des albums d'un utilisateur stockés dans la table SEMPICALBUM
+     *
+     * @return le DataModel de tous les SempicAlbum d'un utilisateur de la base de données
+     * 
+     */
     public DataModel<SempicAlbum> getDataModel() {
         if (dataModel == null) {
-            //dataModel = new ListDataModel<>(albumDao.findAll());
-            System.out.println("data " + albumDao.findAlbum(userDao.read(Long.parseLong(getOwnerId()))).toString());
             dataModel = new ListDataModel<>(albumDao.findAlbum(userDao.read(Long.parseLong(getOwnerId()))));
         }
         return dataModel;
     }
 
+    // Accesseurs (get/set)
     public void setOwnerId(String id) {
         System.out.println("set id list " + id); 
         this.ownerId = id;

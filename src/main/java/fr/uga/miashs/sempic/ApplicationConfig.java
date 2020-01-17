@@ -5,11 +5,11 @@
  */
 package fr.uga.miashs.sempic;
 
-import fr.uga.miashs.sempic.entities.SempicGroup;
+import fr.uga.miashs.sempic.dao.GroupFacade;
 import fr.uga.miashs.sempic.entities.SempicUser;
 import fr.uga.miashs.sempic.entities.SempicUserType;
-import fr.uga.miashs.sempic.dao.GroupFacade;
 import fr.uga.miashs.sempic.dao.SempicUserFacade;
+import fr.uga.miashs.sempic.entities.SempicGroup;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -97,3 +97,4 @@ public class ApplicationConfig {
     }
 
 }
+

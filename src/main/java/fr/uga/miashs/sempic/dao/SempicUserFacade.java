@@ -6,16 +6,17 @@
 package fr.uga.miashs.sempic.dao;
 
 import fr.uga.miashs.sempic.SempicModelException;
+import fr.uga.miashs.sempic.entities.SempicAlbum;
 import fr.uga.miashs.sempic.entities.SempicUser;
+import java.io.IOException;
 import java.util.List;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityGraph;
-import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
-import javax.swing.*;
+
 
 /**
  *
@@ -107,14 +108,28 @@ public class SempicUserFacade extends AbstractJpaFacade<Long,SempicUser> {
      * Supprime le SempicUser de la base de données
      *
      * @param id = id de l'utilisateur à supprimer
+     * @throws java.io.IOException
      * 
      */
-    public void remove(Long id){
+    public void remove(Long id) throws IOException{
+         // Lorsqu'un utilisateur a des albums on les récupère dans SempicAlbum
+        Query qA = getEntityManager().createNamedQuery("query.SempicAlbum.selectByOwner");
+        qA.setParameter("owner", read(id));
+        // On les stockes dans une liste
+        List<SempicAlbum> resultList = qA.getResultList();
+        // On supprime les photos présentent dans l'album de l'utilisateur
+        Query qPhoto = getEntityManager().createNamedQuery("query.SempicPhoto.removeByAlbum");
+        int i = 0;
+        while (i<resultList.size()){
+            qPhoto.setParameter("album", resultList.get(i)).executeUpdate();
+            i++;
+        }
         // Lorsqu'un utilisateur a des albums on les retire de la base de données SempicAlbum
         Query qAlbum = getEntityManager().createNamedQuery("query.SempicAlbum.removeByOwner");
         qAlbum.setParameter("owner", read(id)).executeUpdate();
         Query q = getEntityManager().createNamedQuery("query.SempicUser.remove");
         q.setParameter("id", id).executeUpdate();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/SempicJPA/faces/admin/list-users.xhtml");
     }
     
 }

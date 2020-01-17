@@ -6,7 +6,6 @@
 package fr.uga.miashs.sempic.dao;
 
 import fr.uga.miashs.sempic.entities.SempicGroup;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 

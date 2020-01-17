@@ -5,11 +5,8 @@
  */
 package fr.uga.miashs.sempic.backingbeans;
 
-import fr.uga.miashs.sempic.SempicModelException;
 import fr.uga.miashs.sempic.dao.SempicUserFacade;
 import fr.uga.miashs.sempic.entities.SempicUser;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -29,7 +26,12 @@ public class ListUsers {
     @Inject
     private SempicUserFacade userDao;
 
-    
+    /**
+     * Récupère l'ensemble des utilisateurs stockés dans la table SEMPICUSER
+     *
+     * @return le DataModel de tous les SempicUser de la base de données
+     * 
+     */
     public DataModel<SempicUser> getDataModel() {
         if (dataModel == null) {
             dataModel = new ListDataModel<>(userDao.findAll());

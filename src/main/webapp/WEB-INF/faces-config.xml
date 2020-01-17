@@ -27,7 +27,7 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    
+        
     <navigation-rule>
         <description>Create group page</description>
         <from-view-id>*</from-view-id>
@@ -64,7 +64,7 @@
         </navigation-case>
     </navigation-rule>
     
-    <navigation-rule>
+        <navigation-rule>
         <description>Group creation action result</description>
         <from-view-id>create-group.xhtml</from-view-id>
         <navigation-case>
