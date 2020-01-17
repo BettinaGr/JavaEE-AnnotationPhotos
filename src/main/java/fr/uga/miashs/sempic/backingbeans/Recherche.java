@@ -154,7 +154,6 @@ public class Recherche implements Serializable{
     
     public DataModel<SempicPhoto> getDataModel() {
         if (!resultSearch.isEmpty()) {
-            System.out.println("dataPhoto " + photoDao.findPhotosByListId(resultSearch));
             dataModel = new ListDataModel<>(photoDao.findPhotosByListId(resultSearch));
         } else if (resultSearch.isEmpty()) {
             dataModel = null;
