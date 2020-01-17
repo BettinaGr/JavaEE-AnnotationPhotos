@@ -15,6 +15,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
         ex:Subject ex:Yann.
   }
    ```
+Résultat attendu: ex:Photo2
 
 * Photos de plusieurs personnes : Yann et Maxence
  ```sql
@@ -25,6 +26,7 @@ PREFIX ex:<<http://www.semanticweb.org/ontologies/WebSemProject#>>
        ex:Subject ex:Maxence.
   }
    ```
+Résultat attendu: ex:Photo2 
 
 * Photos où il y a des personnes identifiées dessus   
  ```sql
@@ -35,7 +37,8 @@ SELECT DISTINCT ?pic
     ?p a ex:People.
   }
    ```
-   
+Résultat attendu: ex:Photo2 
+
 * Photos où il n'y a personne dessus
  ```sql
  SELECT DISTINCT ?pic
@@ -46,6 +49,7 @@ SELECT DISTINCT ?pic
     	?s a ex:People.}
  }
    ```
+Résultat attendu: ex:Photo1, ex:Photo3, ex:Photo4, ex:Photo5
 
 * Photos de pot de départ 
  ```sql
@@ -56,6 +60,7 @@ WHERE {
   ?event a ex:Farewell_party.
 }
    ```
+Résultat attendu: ex:Photo4
 
 * Photos de crémaillère
  ```sql
@@ -66,6 +71,7 @@ SELECT DISTINCT ?picture
   ?event a ex:House-warming_party.
   }
    ```
+Résultat attendu: ex:Photo2
 
  * Photos de crémaillère décrivant Yann
  ```sql
@@ -78,6 +84,7 @@ SELECT DISTINCT ?picture
   	
  }
   ```
+Résultat attendu: ex:Photo2
 
 * Photos de vacances :
  ```sql
@@ -88,6 +95,7 @@ SELECT DISTINCT ?picture
 	?e a ex:Holidays.
   }
  ```
+Résultat attendu: ex:Photo3
 
 * Photos d'un show :
  ```sql
@@ -98,6 +106,7 @@ SELECT DISTINCT ?picture
     ?e a ex:Show.
   }
    ```
+Résultat attendu: ex:Photo5
   
 * Photos d’un lieu particulier : Grenoble 
  ```sql
@@ -107,6 +116,7 @@ WHERE {
     	ex:Where ex:Grenoble.
 }
  ```
+Résultat attendu: ex:Photo1
 
 * Photos d’un monument particulier : Eiffel_tower 
  ```sql
@@ -116,6 +126,7 @@ WHERE {
         ex:Where ex:Eiffel_Tower.
 }
  ```
+Résultat attendu: ex:Photo3
  
 * Photos prises durant une certaine période de temps : toutes celles prises entre le 24 et le 31 décembre 2019
  ```sql
@@ -127,6 +138,7 @@ WHERE {
     FILTER (?when < "2019-12-31T23:59:59"^^xsd:dateTime)
   }
   ```
+Résultat attendu: ex:Photo3
   
 * Selfie(s)
  ```sql
@@ -137,7 +149,8 @@ WHERE {
 	     ex:Author ?p.
   }
   ```
-  
+Résultat attendu: ex:Photo2
+
 * Photos d'un type d'animal : dog
 ```sql
 SELECT DISTINCT ?pic
@@ -147,7 +160,8 @@ WHERE {
     ?s a ex:dog.
 }
   ```
-  
+Résultat attendu: ex:Photo1, ex:Photo5
+
 * Photos avec un ami de Maxence
 ```sql
 SELECT ?pic
@@ -157,7 +171,7 @@ SELECT ?pic
   	ex:Maxence ex:Friend ?ami.
  }
    ```
-   
+Résultat attendu: ex:Photo2   
 
 
   
