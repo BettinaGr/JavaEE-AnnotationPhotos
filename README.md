@@ -50,10 +50,11 @@ SELECT DISTINCT ?pic
 * Photos de pot de départ 
  ```sql
 SELECT ?picture
- WHERE {
-   ?picture a ex:Picture;
-       ex:Events ex:Farewell_party.
- }
+WHERE {
+  ?picture a ex:Picture;
+      ex:Events ?event.
+  ?event a ex:Farewell_party.
+}
    ```
 
 * Photos de crémaillère
@@ -61,7 +62,8 @@ SELECT ?picture
 SELECT DISTINCT ?picture 
   WHERE {
     ?picture a ex:Picture;
-        ex:Events ex:House-warming_party.
+        ex:Events ?event.
+  ?event a ex:House-warming_party.
   }
    ```
 
@@ -70,8 +72,10 @@ SELECT DISTINCT ?picture
  SELECT ?pic
  WHERE {
     ?pic a ex:Picture;
-	ex:Events ex:House-warming_party;
-  	ex:Subject ex:Yann.
+	ex:Events ?event;
+	ex:Subject ex:Yann.
+  ?event a ex:House-warming_party;
+  	
  }
   ```
 
@@ -106,10 +110,10 @@ WHERE {
 
 * Photos d’un monument particulier : Eiffel_tower 
  ```sql
-SELECT DISTINCT ?pic
+SELECT ?pic 
 WHERE {
    ?pic a ex:Picture;
-    ex:Subject ex:Eiffel_tower.
+        ex:Where ex:Eiffel_Tower.
 }
  ```
  
